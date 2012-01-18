@@ -1,0 +1,28 @@
+name: PrivatChest
+main: de.davboecki.multimodworld.plugin.PrivatChest
+version: 0.1
+load: startup
+
+commands:
+    multimodworld:
+        aliases: mmw privatchest
+        description: MultiModWorld settings command.
+        usage: |
+            /multimodworld worldsetting/ws <world> - Display world-settings.
+            /multimodworld worldsetting/ws <world> <tag> <true/false> - Change world-settings
+            /multimodworld worldsetting/ws <world> list <entity/item> <name> - Set Entity/Item list.
+            /multimodworld worldsetting/ws <world> allowall <entity/item> <true/false> - Set Entity/Item list.
+            /multimodworld exchangeworld/ew - List all exchangeworld.
+            /multimodworld exchangeworld/ew <world> - Display exchangeworld-settings.
+            /multimodworld exchangeworld/ew <world> <Mod/Creative> - Change exchangeworld-type.
+            /multimodworld exchangeworld/ew <world> item <name> - Set item list.
+            /multimodworld known <entity/item> - Displays known Item/Entity.
+            /multimodworld list <entity/item> - Display all Entity/Item list.
+            /multimodworld list <entity/item> add <listname> - Add Entity/Item list.
+            /multimodworld list <entity/item> list <listname> - Display Entity/Item list.
+            /multimodworld list <entity/item> modify <listname> <add/remove> <value> - Edit Entity/Item list.
+            /multimodworld list <entity/item> modify <listname> add last - Add last blocked value.
+            /multimodworld save - Forcesave settings.
+            /multimodworld reload - Reload the settings.
+            /multimodworld yes - Confirm question.
+            /multimodworld no - Deny question.
