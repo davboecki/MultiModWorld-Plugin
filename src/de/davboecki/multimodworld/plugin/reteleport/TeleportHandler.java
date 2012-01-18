@@ -88,6 +88,7 @@ public class TeleportHandler {
 						return null;
 					}
     			},player.getName());
+	    		player.sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.WHITE+"/"+ChatColor.RED+"no"+ChatColor.WHITE+">");
 	    		if(Settings.getWorldSetting(event.getFrom().getWorld().getName()).CheckTeleport) {
 	    			Location loc = new Location(getFirstModChangeWorld(), 6.5, 10, 6.5);
 	    			event.setTo(loc);
