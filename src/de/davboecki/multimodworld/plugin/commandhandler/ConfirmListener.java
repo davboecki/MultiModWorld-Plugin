@@ -24,13 +24,13 @@ public class ConfirmListener extends PlayerListener {
 		
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event){
 		if(event.isCancelled()) return;
-		if(Task.containsKey(event.getPlayer())){
+		if(Task.containsKey(event.getPlayer().getName())){
 			event.getPlayer().sendMessage("Please answer question first!");
 			event.setCancelled(true);
 		}
-		if(MorePageDisplay.containsKey(event.getPlayer())){
-			if(!MorePageDisplay.get(event.getPlayer()).isTerminated()){
-				if(!MorePageDisplay.get(event.getPlayer()).HandleChat("exit",(CommandSender)event.getPlayer())){
+		if(MorePageDisplay.containsKey(event.getPlayer().getName())){
+			if(!MorePageDisplay.get(event.getPlayer().getName()).isTerminated()){
+				if(!MorePageDisplay.get(event.getPlayer().getName()).HandleChat("exit",(CommandSender)event.getPlayer())){
 					event.getPlayer().sendMessage(ChatColor.RED+"Exit "+ChatColor.AQUA+"PageView"+ChatColor.RED+" first!");
 					event.setCancelled(true);
 				}
@@ -52,9 +52,9 @@ public class ConfirmListener extends PlayerListener {
 			}
 			event.setCancelled(true);
 		} else {
-			if(MorePageDisplay.containsKey(event.getPlayer())){
-				if(!MorePageDisplay.get(event.getPlayer()).isTerminated()){
-					if(MorePageDisplay.get(event.getPlayer()).HandleChat(event.getMessage(),(CommandSender)event.getPlayer())){
+			if(MorePageDisplay.containsKey(event.getPlayer().getName())){
+				if(!MorePageDisplay.get(event.getPlayer().getName()).isTerminated()){
+					if(MorePageDisplay.get(event.getPlayer().getName()).HandleChat(event.getMessage(),(CommandSender)event.getPlayer())){
 						event.setCancelled(true);
 					}
 				}
@@ -63,7 +63,7 @@ public class ConfirmListener extends PlayerListener {
 	}
 	
 	public static void register(MorePageDisplay MorePageDisplayinput,String name){
-		if(MorePageDisplay.containsKey(name) && !MorePageDisplay.get(name).isTerminated())return;
+		if(MorePageDisplay.containsKey(name) && !MorePageDisplay.get(name).isTerminated()) return;
 		MorePageDisplay.put(name, MorePageDisplayinput);
 	}
 	
