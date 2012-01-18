@@ -225,6 +225,7 @@ public class MorePageDisplay {
 			sender.sendMessage(content.get(i).content);
 		}
 		if(!all) clearscreen(sender,(count*page)-i);
+		if(all && count > content.size()) clearscreen(sender,count - content.size());
 		if(!flag) printLastLine(sender);
 	}
 	
