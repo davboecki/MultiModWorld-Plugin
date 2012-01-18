@@ -75,7 +75,7 @@ public class TeleportHandler {
 	    		plugin.PrivatChestPlayerListener.addMoveTask(player.getName(),new CallableObjects(new Object[]{event.getPlayer(),plugin.confirmlistener},plugin){
 					@Override
 					public Object call() throws Exception {
-						if(((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName()))((Player)args[0]).sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.WHITE+"/"+ChatColor.RED+"no"+ChatColor.WHITE+">");
+						if(((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName()))((Player)args[0]).sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
 						return !((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName());
 					}
 				});
@@ -84,11 +84,12 @@ public class TeleportHandler {
 					public Object call() throws Exception {
 			    		plugin.PlayerModPacketListener.TeleportDestination.put((String)args[0], (Location)args[1]);
 			    		if(PrivatChest.debug()) plugin.log.info("Packet 230: "+((String)args[0])+": OnPlayerTeleport, World: "+((Location)args[1]).getWorld().getName());
+			    		((Player)args[0]).sendMessage(ChatColor.GREEN+"Teleporting to destination ...");
 			    		ModLoaderMp.HandleAllLogins((EntityPlayer)args[2],"OnPlayerTeleport");
 						return null;
 					}
     			},player.getName());
-	    		player.sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.WHITE+"/"+ChatColor.RED+"no"+ChatColor.WHITE+">");
+	    		player.sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
 	    		if(Settings.getWorldSetting(event.getFrom().getWorld().getName()).CheckTeleport) {
 	    			Location loc = new Location(getFirstModChangeWorld(), 6.5, 10, 6.5);
 	    			event.setTo(loc);
@@ -172,13 +173,13 @@ public class TeleportHandler {
     	    		((CraftPlayer)player).getHandle().netServerHandler.sendPacket(new Packet51MapChunk((((int)loc.getX())>>4)<<4, 0, (((int)loc.getZ())>>4)<<4, 16,  ((CraftWorld)loc.getWorld()).getHandle().height, 16, ((CraftWorld)loc.getWorld()).getHandle()));
     	    		//teleport(player,loc);
     	    		//ReTeleportThread.add(10,player,loc);
-    	    		player.sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.WHITE+"/"+ChatColor.RED+"no"+ChatColor.WHITE+">");
+    	    		player.sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
     	    		plugin.confirmlistener.addTask(new CallableObjects(new Object[]{player,Oldloc,((CraftPlayer) player).getHandle()},plugin){
     					@Override
     					public Object call() throws Exception {
     			    		plugin.PlayerModPacketListener.TeleportDestination.put(((Player)args[0]).getName(), (Location)args[1]);
     			    		if(PrivatChest.debug())plugin.log.info("Packet 230: "+(((Player)args[0]).getName())+": OnJoinConfirm, World: "+((Location)args[1]).getWorld().getName());
-    						((Player)args[0]).sendMessage("Teleported to old world.");
+    						((Player)args[0]).sendMessage(ChatColor.GREEN+"Teleported to old world.");
     			    		ModLoaderMp.HandleAllLogins((EntityPlayer)args[2],"OnJoinConfirm");
     						return null;
     					}
@@ -186,7 +187,7 @@ public class TeleportHandler {
     	    		plugin.PrivatChestPlayerListener.addMoveTask(player.getName(),new CallableObjects(new Object[]{event.getPlayer(),plugin.confirmlistener},plugin){
     					@Override
     					public Object call() throws Exception {
-    						if(((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName()))((Player)args[0]).sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.WHITE+"/"+ChatColor.RED+"no"+ChatColor.WHITE+">");
+    						if(((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName()))((Player)args[0]).sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
     						return !((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName());
     					}
     				});
