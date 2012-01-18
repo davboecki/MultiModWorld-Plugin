@@ -83,7 +83,7 @@ public class TeleportHandler {
 					@Override
 					public Object call() throws Exception {
 			    		plugin.PlayerModPacketListener.TeleportDestination.put((String)args[0], (Location)args[1]);
-						plugin.log.info("Packet 230: "+((String)args[0])+": OnPlayerTeleport, World: "+((Location)args[1]).getWorld().getName());
+			    		if(PrivatChest.debug()) plugin.log.info("Packet 230: "+((String)args[0])+": OnPlayerTeleport, World: "+((Location)args[1]).getWorld().getName());
 			    		ModLoaderMp.HandleAllLogins((EntityPlayer)args[2],"OnPlayerTeleport");
 						return null;
 					}
@@ -91,7 +91,7 @@ public class TeleportHandler {
 	    		if(Settings.getWorldSetting(event.getFrom().getWorld().getName()).CheckTeleport) {
 	    			Location loc = new Location(getFirstModChangeWorld(), 6.5, 10, 6.5);
 	    			event.setTo(loc);
-	    			event.getPlayer().sendMessage("OnTeleport, set Target to:"+loc.toString());
+	    			if(PrivatChest.debug()) event.getPlayer().sendMessage("OnTeleport, set Target to:"+loc.toString());
     	    		ReTeleportThread.add(1,player,loc);
 	    		} else {
 	    			event.setCancelled(true);
@@ -126,7 +126,7 @@ public class TeleportHandler {
         	if(Settings.getWorldSetting(world.getName()).CheckTeleport) {
     	    	if(!plugin.ModPacketOK.contains(player.getName())){
     	    		plugin.PlayerModPacketListener.TeleportDestination.put(player.getName(), event.getRespawnLocation());
-    				plugin.log.info("Packet 230: "+event.getPlayer().getName()+": onPlayerRespawn, World: "+world.getName());
+    	    		if(PrivatChest.debug()) plugin.log.info("Packet 230: "+event.getPlayer().getName()+": onPlayerRespawn, World: "+world.getName());
     	    		ModLoaderMp.HandleAllLogins(((CraftPlayer) player).getHandle(),"onPlayerRespawn");
     	    		Location loc = new Location(getFirstModChangeWorld(), 6.5, 10, 6.5);
     	    		isLocalTeleport = true;
@@ -171,11 +171,12 @@ public class TeleportHandler {
     	    		((CraftPlayer)player).getHandle().netServerHandler.sendPacket(new Packet51MapChunk((((int)loc.getX())>>4)<<4, 0, (((int)loc.getZ())>>4)<<4, 16,  ((CraftWorld)loc.getWorld()).getHandle().height, 16, ((CraftWorld)loc.getWorld()).getHandle()));
     	    		//teleport(player,loc);
     	    		//ReTeleportThread.add(10,player,loc);
+    	    		player.sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.WHITE+"/"+ChatColor.RED+"no"+ChatColor.WHITE+">");
     	    		plugin.confirmlistener.addTask(new CallableObjects(new Object[]{player,Oldloc,((CraftPlayer) player).getHandle()},plugin){
     					@Override
     					public Object call() throws Exception {
     			    		plugin.PlayerModPacketListener.TeleportDestination.put(((Player)args[0]).getName(), (Location)args[1]);
-    						plugin.log.info("Packet 230: "+(((Player)args[0]).getName())+": OnJoinConfirm, World: "+((Location)args[1]).getWorld().getName());
+    			    		if(PrivatChest.debug())plugin.log.info("Packet 230: "+(((Player)args[0]).getName())+": OnJoinConfirm, World: "+((Location)args[1]).getWorld().getName());
     						((Player)args[0]).sendMessage("Teleported to old world.");
     			    		ModLoaderMp.HandleAllLogins((EntityPlayer)args[2],"OnJoinConfirm");
     						return null;
@@ -193,85 +194,4 @@ public class TeleportHandler {
         	return;
     	}
 	}
-	
-	/*
-    private EntityPlayer moveToWorld(EntityPlayer entityplayer, int i1, boolean flag, Location location)
-    {	
-    	MinecraftServer server = ((CraftServer)Bukkit.getServer()).getServer();
-    	CraftServer cserver = (CraftServer)Bukkit.getServer();
-    	ServerConfigurationManager ServerConfigManager = ((CraftServer)Bukkit.getServer()).getHandle();
-    	PlayerManager playermanager = server.getWorldServer(entityplayer.dimension).manager;
-    	
-        server.getTracker(entityplayer.dimension).untrackPlayer(entityplayer);
-        playermanager.removePlayer(entityplayer);
-        ServerConfigManager.players.remove(entityplayer);
-        server.getWorldServer(entityplayer.dimension).removeEntity(entityplayer);
-        ChunkCoordinates chunkcoordinates = entityplayer.getBed();
-        EntityPlayer entityplayer1 = entityplayer;
-        World world = entityplayer1.getBukkitEntity().getWorld();
-        if(flag)
-            entityplayer1.copyTo(entityplayer);
-        if(location == null)
-        {
-            boolean flag1 = false;
-            CraftWorld craftworld = (CraftWorld)server.server.getWorld(entityplayer.spawnWorld);
-            if(craftworld != null && chunkcoordinates != null)
-            {
-                ChunkCoordinates chunkcoordinates2 = EntityHuman.getBed(craftworld.getHandle(), chunkcoordinates);
-                if(chunkcoordinates2 != null)
-                {
-                    flag1 = true;
-                    location = new Location(craftworld, (double)chunkcoordinates2.x + 0.5D, chunkcoordinates2.y, (double)chunkcoordinates2.z + 0.5D);
-                } else
-                {
-                    entityplayer1.netServerHandler.sendPacket(new Packet70Bed(0, 0));
-                }
-            }
-            if(location == null)
-            {
-                CraftWorld craftworld1 = (CraftWorld)server.server.getWorlds().get(0);
-                ChunkCoordinates chunkcoordinates1 = craftworld1.getHandle().getSpawn();
-                location = new Location(craftworld1, (double)chunkcoordinates1.x + 0.5D, chunkcoordinates1.y, (double)chunkcoordinates1.z + 0.5D);
-            }
-            Player player = cserver.getPlayer(entityplayer);
-            PlayerRespawnEvent playerrespawnevent = new PlayerRespawnEvent(player, location, flag1);
-            cserver.getPluginManager().callEvent(playerrespawnevent);
-            location = playerrespawnevent.getRespawnLocation();
-            entityplayer.reset();
-        } else
-        {
-            if(!((CraftWorld)location.getWorld()).equals(server.getWorldServer(i1).getWorld())){
-            	location.setWorld(server.getWorldServer(i1).getWorld());
-            	try {
-            		throw new Exception("Different Worlds???");
-            	} catch(Exception e){
-            		e.printStackTrace();
-            	}
-            }
-        }
-        WorldServer worldserver = ((CraftWorld)location.getWorld()).getHandle();
-        entityplayer1.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-        worldserver.chunkProviderServer.getChunkAt((int)entityplayer1.locX >> 4, (int)entityplayer1.locZ >> 4);
-        for(; worldserver.getEntities(entityplayer1, entityplayer1.boundingBox).size() != 0; entityplayer1.setPosition(entityplayer1.locX, entityplayer1.locY + 1.0D, entityplayer1.locZ));
-        byte byte0 = (byte)worldserver.getWorld().getEnvironment().getId();
-        entityplayer1.netServerHandler.sendPacket(new Packet9Respawn(byte0, (byte)worldserver.difficulty, worldserver.getSeed(), worldserver.height, entityplayer1.itemInWorldManager.a()));
-        entityplayer1.spawnIn(worldserver);
-        entityplayer1.dead = false;
-        entityplayer1.netServerHandler.teleport(new Location(worldserver.getWorld(), entityplayer1.locX, entityplayer1.locY, entityplayer1.locZ, entityplayer1.yaw, entityplayer1.pitch));
-        ServerConfigManager.a(entityplayer1, worldserver);
-    	PlayerManager playermanager1 = server.getWorldServer(entityplayer1.dimension).manager;
-    	playermanager1.addPlayer(entityplayer1);
-        worldserver.addEntity(entityplayer1);
-        ServerConfigManager.players.add(entityplayer1);
-        ServerConfigManager.updateClient(entityplayer1);
-        entityplayer1.A();
-        /*
-        if(world != location.getWorld())
-        {
-            PlayerChangedWorldEvent playerchangedworldevent = new PlayerChangedWorldEvent((Player)entityplayer1.getBukkitEntity(), world);
-            Bukkit.getServer().getPluginManager().callEvent(playerchangedworldevent);
-        }/
-        return entityplayer1;
-    }
-    */
    }

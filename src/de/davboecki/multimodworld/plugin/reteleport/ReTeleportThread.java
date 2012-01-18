@@ -51,7 +51,7 @@ public class ReTeleportThread implements Runnable {
 				if(setting.Player.isOnline()){
 					if((setting.Target.getWorld().getName() != setting.Player.getWorld().getName() || setting.Target.distance(setting.Player.getLocation()) > 5)) {
 						setting.Player.sendMessage("Reteleporting, Form:"+setting.Player.getLocation().toString()+" To:"+setting.Target.toString());
-						plugin.teleporthandler.teleport(setting.Player,setting.Target);
+						if(PrivatChest.debug()) plugin.teleporthandler.teleport(setting.Player,setting.Target);
 						if(AfterTick.containsKey(setting.Name)){
 							AfterTick.remove(setting.Name);
 						}

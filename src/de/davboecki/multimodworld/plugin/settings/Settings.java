@@ -282,6 +282,18 @@ public class Settings {
         	ex.printStackTrace();
         	plugin.log.severe("[PrivatChest] Could not load PrivatChest Config.");
         }
+        //Parse
+        if(!config.containsKey("debug")){
+        	config.put("debug", false);
+        	saveconfig();
+        } else {
+        	Object fobject = config.get("debug");
+        	if(fobject instanceof Boolean){
+        		if((Boolean)fobject){
+        			PrivatChest.setdebug(true);
+        		}
+        	}
+        }
 	}
 	
     private void saveconfig(){

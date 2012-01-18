@@ -48,7 +48,7 @@ public class ConfirmListener extends PlayerListener {
 			if(!handleAnswer(flag,event.getPlayer().getName())){
 				event.getPlayer().sendMessage(ChatColor.RED + "Error: Could not handle answer.");
 			} else {
-				event.getPlayer().sendMessage(ChatColor.GREEN + " Answer handled.");
+				//event.getPlayer().sendMessage(ChatColor.GREEN + "Answer handled.");
 			}
 			event.setCancelled(true);
 		} else {

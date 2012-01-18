@@ -70,6 +70,18 @@ public class PrivatChest extends JavaPlugin {
     public MultiModWorld MultiModWorld = null;
     public TeleportHandler teleporthandler = new TeleportHandler(this);
     
+    
+    //Debug Mode
+    private static boolean debug = false;
+    public static boolean debug(){
+    	return debug;
+    }
+    
+    public static void setdebug(Boolean flag){
+    	debug = flag;
+    }
+    //Debug Mode
+    
     public Settings getSettings(){
     	return Settings;
     }
