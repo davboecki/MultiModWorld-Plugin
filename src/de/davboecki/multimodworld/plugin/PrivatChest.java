@@ -137,6 +137,13 @@ public class PrivatChest extends JavaPlugin {
     }
     
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    	
+    	//Op-only
+    	if(!sender.isOp()) {
+    		sender.sendMessage(ChatColor.RED+"You don't have permission to do that.");
+    		return true;
+    	}
+    	
         if(label.equalsIgnoreCase("multimodworld") || label.equalsIgnoreCase("mmw") || label.equalsIgnoreCase("privatchest")){
         	boolean flag = commandhandler.HandleMMWCommand(sender, args);
         	MultiModWorld.cachereset(); //Reset Cache
