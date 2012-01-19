@@ -15,16 +15,22 @@ public class PacketListener extends PacketHandleEventListener {
 		plugin = instance;
 	}
 	
-	public void onPacketSendEvent(PacketSendEvent event){
-		Packet packet = event.packet;
-		if(packet instanceof Packet230ModLoader){
-			if(!plugin.ModPacketOK.contains(event.getPlayer().getName()) && !AllowModLoaderPacket){
-				event.setCancelled(true);
+	public void onPacketSendEvent(PacketSendEvent event) {
+		try {
+			Packet packet = event.packet;
+			if(packet == null) return;
+			if(event.getPlayer() == null) return;
+			if(packet instanceof Packet230ModLoader){
+				if(!plugin.ModPacketOK.contains(event.getPlayer().getName()) && !AllowModLoaderPacket){
+					event.setCancelled(true);
+				}
+			} else if(!packet.getClass().getPackage().getName().equalsIgnoreCase("net.minecraft.server")) {
+				if(!plugin.ModPacketOK.contains(event.getPlayer().getName())){
+					event.setCancelled(true);
+				}
 			}
-		} else if(!packet.getClass().getPackage().getName().equalsIgnoreCase("net.minecraft.server")) {
-			if(!plugin.ModPacketOK.contains(event.getPlayer().getName())){
-				event.setCancelled(true);
-			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
