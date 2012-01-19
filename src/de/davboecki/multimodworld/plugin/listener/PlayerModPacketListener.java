@@ -104,7 +104,7 @@ public class PlayerModPacketListener extends ModHandleEventListener{
 						drueber.add(0.0D, 1.0D, 0.0D);
 					}
 				}
-				if(PrivatChest.debug()) event.getPlayer().sendMessage("ModLOaderMP OK, Teleporting to:"+loc.toString());
+				if(PrivatChest.debug()) event.getPlayer().sendMessage("ModLoaderMP OK, Teleporting to:"+loc.toString());
 				plugin.teleporthandler.teleport(event.getPlayer(),loc);
 			    ReTeleportThread.add(20,event.getPlayer(),loc);
 				TeleportDestination.remove(event.getPlayer().getName());
