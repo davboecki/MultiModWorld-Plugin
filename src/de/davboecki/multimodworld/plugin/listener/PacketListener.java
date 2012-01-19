@@ -22,7 +22,9 @@ public class PacketListener extends PacketHandleEventListener {
 				event.setCancelled(true);
 			}
 		} else if(!packet.getClass().getPackage().getName().equalsIgnoreCase("net.minecraft.server")) {
-			event.setCancelled(true);
+			if(!plugin.ModPacketOK.contains(event.getPlayer().getName())){
+				event.setCancelled(true);
+			}
 		}
 	}
 }
