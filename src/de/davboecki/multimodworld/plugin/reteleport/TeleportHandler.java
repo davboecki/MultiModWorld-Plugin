@@ -86,13 +86,13 @@ public class TeleportHandler {
 						return !((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName());
 					}
 				});
-	    		plugin.confirmlistener.addTask(new CallableObjects(new Object[]{event.getPlayer().getName(),event.getTo(),((CraftPlayer) player).getHandle()},plugin){
+	    		plugin.confirmlistener.addTask(new CallableObjects(new Object[]{event.getPlayer().getName(),event.getTo(),player},plugin){
 					@Override
 					public Object call() throws Exception {
 			    		plugin.PlayerModPacketListener.TeleportDestination.put((String)args[0], (Location)args[1]);
 			    		if(PrivatChest.debug()) plugin.log.info("Packet 230: "+((String)args[0])+": OnPlayerTeleport, World: "+((Location)args[1]).getWorld().getName());
 			    		((Player)args[0]).sendMessage(ChatColor.GREEN+"Teleporting to destination ...");
-			    		ModLoaderMp.HandleAllLogins((EntityPlayer)args[2],"OnPlayerTeleport");
+			    		plugin.sendModLoaderPacket((Player)args[2]);
 						return null;
 					}
     			},player.getName());
@@ -136,7 +136,7 @@ public class TeleportHandler {
     	    	if(!plugin.ModPacketOK.contains(player.getName())){
     	    		plugin.PlayerModPacketListener.TeleportDestination.put(player.getName(), event.getRespawnLocation());
     	    		if(PrivatChest.debug()) plugin.log.info("Packet 230: "+event.getPlayer().getName()+": onPlayerRespawn, World: "+world.getName());
-    	    		ModLoaderMp.HandleAllLogins(((CraftPlayer) player).getHandle(),"onPlayerRespawn");
+    	    		plugin.sendModLoaderPacket(player);
     	    		Location loc = new Location(getFirstModChangeWorld(), 6.5, 10, 6.5);
     	    		isLocalTeleport = true;
     	    		event.setRespawnLocation(loc);
@@ -181,13 +181,13 @@ public class TeleportHandler {
     	    		//teleport(player,loc);
     	    		//ReTeleportThread.add(10,player,loc);
     	    		player.sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
-    	    		plugin.confirmlistener.addTask(new CallableObjects(new Object[]{player,Oldloc,((CraftPlayer) player).getHandle()},plugin){
+    	    		plugin.confirmlistener.addTask(new CallableObjects(new Object[]{player,Oldloc,player},plugin){
     					@Override
     					public Object call() throws Exception {
     			    		plugin.PlayerModPacketListener.TeleportDestination.put(((Player)args[0]).getName(), (Location)args[1]);
     			    		if(PrivatChest.debug())plugin.log.info("Packet 230: "+(((Player)args[0]).getName())+": OnJoinConfirm, World: "+((Location)args[1]).getWorld().getName());
     						((Player)args[0]).sendMessage(ChatColor.GREEN+"Teleported to old world.");
-    			    		ModLoaderMp.HandleAllLogins((EntityPlayer)args[2],"OnJoinConfirm");
+    						plugin.sendModLoaderPacket((Player)args[2]);
     						return null;
     					}
         			},player.getName());

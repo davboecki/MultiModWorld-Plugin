@@ -267,8 +267,8 @@ public class RoomControler {
         	if(plugin.Settings.ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Mod")){
         		if(!plugin.ModPacketOK.contains(player.getName())){
         			plugin.PlayerModPacketListener.TeleportPlayer.add(player.getName());
-        			plugin.log.info("Packet 230: "+player.getName()+": RoomControler");
-        			ModLoaderMp.HandleAllLogins(((CraftPlayer) player).getHandle(),"RoomControler");
+        			if(plugin.debug())plugin.log.info("Packet 230: "+player.getName()+": RoomControler");
+        			plugin.sendModLoaderPacket(player);
         		} else {
     	        Location TeleportLoc = new Location(player.getWorld(), 26.5, 8,
                     6.5, 90, 0);

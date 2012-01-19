@@ -2,11 +2,14 @@ package de.davboecki.multimodworld.plugin;
 
 import net.minecraft.server.BaseMod;
 import net.minecraft.server.Entity;
+import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.ModLoaderMp;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.generator.*;
@@ -69,6 +72,7 @@ public class PrivatChest extends JavaPlugin {
     private CommandHandler commandhandler = null;
     public MultiModWorld MultiModWorld = null;
     public TeleportHandler teleporthandler = new TeleportHandler(this);
+    public PacketListener PacketListener = new PacketListener(this);
     
     
     //Debug Mode
@@ -118,6 +122,7 @@ public class PrivatChest extends JavaPlugin {
         pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, PlayerPreCommandListener, Event.Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_CHAT, confirmlistener, Event.Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, confirmlistener, Event.Priority.Normal, this);
+        pm.registerEvent(Event.Type.CUSTOM_EVENT, PacketListener, Event.Priority.Normal, this);
         Settings.load();
 
         this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new ReTeleportThread(this), 1, 1);
@@ -134,6 +139,12 @@ public class PrivatChest extends JavaPlugin {
     public void onDisable() {
     	Settings.save();
         log.info("[PrivatChest] Plugin has been disabled.");
+    }
+    
+    public void sendModLoaderPacket(Player player){
+    	PacketListener.AllowModLoaderPacket = true;
+    	ModLoaderMp.HandleAllLogins(((CraftPlayer) player).getHandle());
+    	PacketListener.AllowModLoaderPacket = false;
     }
     
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

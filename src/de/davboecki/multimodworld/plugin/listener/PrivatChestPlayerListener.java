@@ -130,8 +130,8 @@ public class PrivatChestPlayerListener extends PlayerListener {
         }
         if(SendPacket) {
         	plugin.PlayerModPacketListener.ModInventory.put(player.getName(), ModItems);
-			plugin.log.info("Packet 230: "+event.getPlayer().getName()+": ModInventory");
-        	ModLoaderMp.HandleAllLogins(((CraftPlayer) player).getHandle(),"ModInventory");
+			if(PrivatChest.debug())plugin.log.info("Packet 230: "+event.getPlayer().getName()+": ModInventory");
+			plugin.sendModLoaderPacket(player);
         }
         if(playerLoc != null) {
             player.teleport(playerLoc);
@@ -296,8 +296,8 @@ public class PrivatChestPlayerListener extends PlayerListener {
     			}
     		}
     		if(ModItems){
-    			plugin.log.info("Packet 230: "+event.getPlayer().getName()+": ModChest");
-    			ModLoaderMp.HandleAllLogins(((CraftPlayer) event.getPlayer()).getHandle(),"ModChest");
+    			if(PrivatChest.debug())plugin.log.info("Packet 230: "+event.getPlayer().getName()+": ModChest");
+    			plugin.sendModLoaderPacket(event.getPlayer());
     			event.setCancelled(true);
     			plugin.PlayerModPacketListener.CallableAction.put(event.getPlayer().getName(), new CallableObjects(new Object[]{((CraftWorld)event.getPlayer().getWorld()).getHandle(),event.getClickedBlock().getX(),event.getClickedBlock().getY(),event.getClickedBlock().getZ(),((CraftPlayer) event.getPlayer()).getHandle()},plugin){
 					@Override
