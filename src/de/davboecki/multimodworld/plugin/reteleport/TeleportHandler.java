@@ -61,6 +61,13 @@ public class TeleportHandler {
 			TelWorld = pTelWorld;
 		}
 		if(TelWorld == null){
+			for(World pWorld : plugin.getServer().getWorlds()){
+				if(!Settings.getWorldSetting(pWorld.getName()).CheckTeleport) {
+					TelWorld = pWorld;
+				}
+			}
+		}
+		if(TelWorld == null){
 			TelWorld = plugin.getServer().getWorlds().get(0);
 		}
 		return TelWorld;
