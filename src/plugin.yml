@@ -5,7 +5,7 @@ load: startup
 
 commands:
     multimodworld:
-        aliases: mmw privatchest
+        aliases: [mmw, privatchest]
         description: MultiModWorld settings command.
         usage: |
             /multimodworld worldsetting/ws <world> - Display world-settings.
