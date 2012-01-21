@@ -91,7 +91,7 @@ public class TeleportHandler {
 					public Object call() throws Exception {
 			    		plugin.PlayerModPacketListener.TeleportDestination.put((String)args[0], (Location)args[1]);
 			    		if(PrivatChest.debug()) plugin.log.info("Packet 230: "+((String)args[0])+": OnPlayerTeleport, World: "+((Location)args[1]).getWorld().getName());
-			    		((Player)args[0]).sendMessage(ChatColor.GREEN+"Teleporting to destination ...");
+			    		((Player)args[2]).sendMessage(ChatColor.GREEN+"Teleporting to destination ...");
 			    		plugin.sendModLoaderPacket((Player)args[2]);
 						return null;
 					}
@@ -181,13 +181,13 @@ public class TeleportHandler {
     	    		//teleport(player,loc);
     	    		//ReTeleportThread.add(10,player,loc);
     	    		player.sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
-    	    		plugin.confirmlistener.addTask(new CallableObjects(new Object[]{player,Oldloc,player},plugin){
+    	    		plugin.confirmlistener.addTask(new CallableObjects(new Object[]{player,Oldloc},plugin){
     					@Override
     					public Object call() throws Exception {
     			    		plugin.PlayerModPacketListener.TeleportDestination.put(((Player)args[0]).getName(), (Location)args[1]);
     			    		if(PrivatChest.debug())plugin.log.info("Packet 230: "+(((Player)args[0]).getName())+": OnJoinConfirm, World: "+((Location)args[1]).getWorld().getName());
     						((Player)args[0]).sendMessage(ChatColor.GREEN+"Teleported to old world.");
-    						plugin.sendModLoaderPacket((Player)args[2]);
+    						plugin.sendModLoaderPacket((Player)args[0]);
     						return null;
     					}
         			},player.getName());
