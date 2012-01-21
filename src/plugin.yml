@@ -1,6 +1,6 @@
 name: PrivatChest
 main: de.davboecki.multimodworld.plugin.PrivatChest
-version: 0.1
+version: 1.0.1
 load: startup
 
 commands:

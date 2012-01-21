@@ -127,7 +127,7 @@ public class PrivatChest extends JavaPlugin {
         
         commandhandler = new CommandHandler(this);
         
-        log.info("[PrivatChest] Plugin has been enabled!");
+        log.info("[PrivatChest] Plugin v"+this.getDescription().getVersion()+" has been enabled!");
     }
 
     public void save(){Settings.save();}
@@ -135,7 +135,7 @@ public class PrivatChest extends JavaPlugin {
     
     public void onDisable() {
     	Settings.save();
-        log.info("[PrivatChest] Plugin has been disabled.");
+        log.info("[PrivatChest] Plugin v"+this.getDescription().getVersion()+" has been disabled.");
     }
     
     public void sendModLoaderPacket(Player player){
