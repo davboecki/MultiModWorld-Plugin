@@ -50,9 +50,6 @@ import de.davboecki.multimodworld.plugin.settings.WorldSetting;
 
 public class PrivatChest extends JavaPlugin {
 	
-	//For server part
-    public IModWorldHandlePlugin IModWorldHandlePlugin = null;
-	
     public FlatWorldGenerator Worldgen = new FlatWorldGenerator();
     public PlayerPositionCheck PlayerPositionCheck = new PlayerPositionCheck(this);
     
@@ -101,7 +98,7 @@ public class PrivatChest extends JavaPlugin {
 		} catch (Exception e) {}
 		if(flag) {
 	        log.info("[PrivatChest] IModWorldHandlePlugin class found!");
-			IModWorldHandlePlugin = MultiModWorld = new MultiModWorld(this);
+			MultiModWorld = new MultiModWorld(this);
 		}
     	
         PluginManager pm = this.getServer().getPluginManager();
