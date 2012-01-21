@@ -77,61 +77,44 @@ public class PlayerModPacketListener extends ModHandleEventListener{
 				event.getPlayer().getInventory().setBoots(ModInventoryBoots.get(event.getPlayer().getName()));
 				ModInventoryBoots.remove(event.getPlayer().getName());
 			}
-			if(TeleportPlayer.contains(event.getPlayer().getName())){
-				Player player = event.getPlayer();
-				Location playerLoc = player.getLocation();
-				if(player.getWorld().getGenerator() != plugin.Worldgen) return;
-				if (Math.floor(playerLoc.getX()) != ((plugin.RoomControl.getRoomlocation(player).getX() * 7) + 5) || Math.floor(playerLoc.getY()) != 2 || Math.floor(playerLoc.getZ()) != ((plugin.RoomControl.getRoomlocation(player).getZ() * 7) + 3)) return;
-				
-		        Location TeleportLoc = new Location(player.getWorld(), 26.5, 8,
-		                6.5, 90, 0);
-		
-			    plugin.teleporthandler.teleport(player,TeleportLoc);
-			    ReTeleportThread.add(20,player,TeleportLoc);
-			    player.sendMessage("§2Teleportiert");
-			    player.sendMessage("You are now in the §1Mod Stargate§f Room");
-			    TeleportPlayer.remove(event.getPlayer());
-			} else if(TeleportDestination.containsKey(event.getPlayer().getName())) {
-				Location loc = TeleportDestination.get(event.getPlayer().getName());
-				if(loc.getWorld().getGenerator() == plugin.Worldgen){
-					loc = plugin.RoomControl.playertospawn(event.getPlayer());
-				} else {
-					loc.add(0.0D, -1.0D, 0.0D);
-					Location drueber = loc;
+		}
+		if(TeleportPlayer.contains(event.getPlayer().getName())){
+			Player player = event.getPlayer();
+			Location playerLoc = player.getLocation();
+			if(player.getWorld().getGenerator() != plugin.Worldgen) return;
+			if (Math.floor(playerLoc.getX()) != ((plugin.RoomControl.getRoomlocation(player).getX() * 7) + 5) || Math.floor(playerLoc.getY()) != 2 || Math.floor(playerLoc.getZ()) != ((plugin.RoomControl.getRoomlocation(player).getZ() * 7) + 3)) return;
+			
+		       Location TeleportLoc = new Location(player.getWorld(), 26.5, 8,
+		               6.5, 90, 0);
+					    plugin.teleporthandler.teleport(player,TeleportLoc);
+		    ReTeleportThread.add(20,player,TeleportLoc);
+		    player.sendMessage("§2Teleportiert");
+		    player.sendMessage("You are now in the §1Mod Stargate§f Room");
+		    TeleportPlayer.remove(event.getPlayer());
+		} else if(TeleportDestination.containsKey(event.getPlayer().getName())) {
+			Location loc = TeleportDestination.get(event.getPlayer().getName());
+			if(loc.getWorld().getGenerator() == plugin.Worldgen){
+				loc = plugin.RoomControl.playertospawn(event.getPlayer());
+			} else {
+				loc.add(0.0D, -1.0D, 0.0D);
+				Location drueber = loc;
+				drueber.add(0.0D, 1.0D, 0.0D);
+				while((loc.getY() < 4 || !loc.getBlock().isEmpty() || !drueber.getBlock().isEmpty()) && loc.getY() < 128 ){
+					loc.add(0.0D, 1.0D, 0.0D);
 					drueber.add(0.0D, 1.0D, 0.0D);
-					while((loc.getY() < 4 || !loc.getBlock().isEmpty() || !drueber.getBlock().isEmpty()) && loc.getY() < 128 ){
-						loc.add(0.0D, 1.0D, 0.0D);
-						drueber.add(0.0D, 1.0D, 0.0D);
-					}
-				}
-				if(PrivatChest.debug()) event.getPlayer().sendMessage("ModLoaderMP OK, Teleporting to:"+loc.toString());
-				plugin.teleporthandler.teleport(event.getPlayer(),loc);
-			    ReTeleportThread.add(20,event.getPlayer(),loc);
-				TeleportDestination.remove(event.getPlayer().getName());
-			} else if(CallableAction.containsKey(event.getPlayer().getName())){
-				try{
-					CallableAction.get(event.getPlayer().getName()).call();
-				} catch(Exception e){
-					event.getPlayer().sendMessage(ChatColor.RED+"Error: Could not execute callable object.");
-					e.printStackTrace();
 				}
 			}
-		} /* else {
-			if(TeleportPlayer.contains(event.getPlayer().getName())){
-				Player player = event.getPlayer();
-				Location playerLoc = player.getLocation();
-				if(player.getWorld().getGenerator() != plugin.Worldgen) return;
-				if (Math.floor(playerLoc.getX()) != ((plugin.RoomControl.getRoomlocation(player).getX() * 7) + 5) || Math.floor(playerLoc.getY()) != 2 || Math.floor(playerLoc.getZ()) != ((plugin.RoomControl.getRoomlocation(player).getZ() * 7) + 3)) return;
-				
-		        Location TeleportLoc = new Location(player.getWorld(), 26.5, 8,
-		                6.5, 90, 0);
-		
-			    plugin.teleporthandler.teleport(player,TeleportLoc);
-			    ReTeleportThread.add(20,player,TeleportLoc);
-			    player.sendMessage("§2Teleportiert");
-			    player.sendMessage("You are now in the §1Mod Stargate§f Room");
-			    TeleportPlayer.remove(event.getPlayer());
+			if(PrivatChest.debug()) event.getPlayer().sendMessage("ModLoaderMP OK, Teleporting to:"+loc.toString());
+			plugin.teleporthandler.teleport(event.getPlayer(),loc);
+		    ReTeleportThread.add(20,event.getPlayer(),loc);
+			TeleportDestination.remove(event.getPlayer().getName());
+		} else if(CallableAction.containsKey(event.getPlayer().getName())){
+			try{
+				CallableAction.get(event.getPlayer().getName()).call();
+			} catch(Exception e){
+				event.getPlayer().sendMessage(ChatColor.RED+"Error: Could not execute callable object.");
+				e.printStackTrace();
 			}
-		}*/
+		}
 	}
 }
