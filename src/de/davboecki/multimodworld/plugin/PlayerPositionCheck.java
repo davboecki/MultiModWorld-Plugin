@@ -14,7 +14,7 @@ public class PlayerPositionCheck {
 
     public boolean PlayerinRoom(Player player) {
     	if(player.getWorld().getGenerator() != plugin.Worldgen) return false;
-    	if(!player.hasPermission("privatchest.hasRoom")) return false;
+    	if(!player.hasPermission("privatchest.hasroom")) return false;
     	if(!plugin.RoomControl.playerhasRoom(player)) return false;
         Location playerloc = player.getLocation();
         RoomLocation roomloc = plugin.RoomControl.getRoomlocation(player);

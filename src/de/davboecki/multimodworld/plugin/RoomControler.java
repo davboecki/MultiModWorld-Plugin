@@ -50,7 +50,7 @@ public class RoomControler {
     	if(Roomloaded.containsKey(player.getName()) && playerhasRoom(player)){
     		if(Roomloaded.get(player.getName())){return;}
     	}
-    	if(!player.hasPermission("privatchest.hasRoom")){
+    	if(!player.hasPermission("privatchest.hasroom")){
     		if(!MessageSend.contains(player.getName())){
     			plugin.log.info("[PrivatChest] Player not allowed to have Room.");
     			MessageSend.add(player.getName());
@@ -142,7 +142,7 @@ public class RoomControler {
 
         if (!Checker.NoModItem(player,false) &&
                 plugin.RoomControl.playerhasRoom(player) &&
-                player.hasPermission("privatchest.hasRoom")) {
+                player.hasPermission("privatchest.hasroom")) {
             loc.setX((plugin.RoomControl.getRoomlocation(player).getX() * 7) +
                 3.5);
             loc.setY(2);
@@ -161,7 +161,7 @@ public class RoomControler {
     
     public boolean Teleport(Player player, String Target) {
     	if(Target.contains("IN_")){
-            if (!playerhasRoom(player) && player.hasPermission("privatchest.hasRoom")) {
+            if (!playerhasRoom(player) && player.hasPermission("privatchest.hasroom")) {
             	LoadRoom(player);
             }
     	}
@@ -183,7 +183,7 @@ public class RoomControler {
                 player.sendMessage("You are now in your §1PrivatChest§f Room");
 
                 return true;
-            } else if(!player.hasPermission("privatchest.hasRoom")){
+            } else if(!player.hasPermission("privatchest.hasroom")){
                 player.sendMessage("§4You don't have Permission to do that.");
             } else {
                 player.sendMessage("§1Room Not Generated");
