@@ -128,6 +128,16 @@ public class PrivatChest extends JavaPlugin {
         commandhandler = new CommandHandler(this);
         
         log.info("[PrivatChest] Plugin v"+this.getDescription().getVersion()+" has been enabled!");
+        if(MultiModWorld != null) {
+        	String ModVersion = de.davboecki.multimodworld.server.ModChecker.getVerion();
+        	String MultiModWorldVersion = "v1.0.3";
+        	if(!ModVersion.equalsIgnoreCase(MultiModWorldVersion)) {
+        		this.getServer().getPluginManager().disablePlugin(this);
+                log.info("[MultiModWorld] Mod "+ModVersion+" has been found. But "+MultiModWorldVersion+" is required.");
+        	} else {
+                log.info("[MultiModWorld] Mod "+ModVersion+" has been enabled.");
+        	}
+        }
     }
 
     public void save(){Settings.save();}
@@ -145,14 +155,14 @@ public class PrivatChest extends JavaPlugin {
     }
     
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    	
-    	//Op-only
-    	if(!sender.isOp()) {
-    		sender.sendMessage(ChatColor.RED+"You don't have permission to do that.");
-    		return true;
-    	}
-    	
-        if(label.equalsIgnoreCase("multimodworld") || label.equalsIgnoreCase("mmw") || label.equalsIgnoreCase("privatchest")){
+        if(label.equalsIgnoreCase("multimodworld") || label.equalsIgnoreCase("mmw") || label.equalsIgnoreCase("privatchest")) {
+
+        	//Op-only
+        	if(!sender.isOp()) {
+        		sender.sendMessage(ChatColor.RED+"You don't have permission to do that.");
+        		return true;
+        	}
+        	
         	boolean flag = commandhandler.HandleMMWCommand(sender, args);
         	MultiModWorld.cachereset(); //Reset Cache
         	if(!flag && sender instanceof Player){
