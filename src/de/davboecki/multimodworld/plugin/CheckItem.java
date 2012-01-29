@@ -64,10 +64,10 @@ public class CheckItem {
     private void Message(Player player,ItemStack item){
     	if(item.getType().toString().equalsIgnoreCase("MODLOADERMP_ITEM")){
     		if(net.minecraft.server.Item.byId.length > item.getTypeId() && net.minecraft.server.Item.byId[item.getTypeId()] != null){
-    			String Name = net.minecraft.server.Item.byId[item.getTypeId()].k();
+    			String Name = net.minecraft.server.Item.byId[item.getTypeId()].l();
     			if(Name.indexOf(".") > 0){
     				if(net.minecraft.server.Block.byId.length > item.getTypeId() && net.minecraft.server.Block.byId[item.getTypeId()] != null){
-    		    		Name = net.minecraft.server.Block.byId[item.getTypeId()].m();
+    		    		Name = net.minecraft.server.Block.byId[item.getTypeId()].getName();
     				}
     				if(Name.indexOf(".") > 0){
     					Name = GetNameOutOfPath(Name);
