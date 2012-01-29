@@ -128,16 +128,13 @@ public class PrivatChestPlayerListener extends PlayerListener {
     		player.getInventory().setBoots(null);
     		SendPacket = true;
         }
+        
+        plugin.teleporthandler.HandleJoin(event,SendPacket);
+        
         if(SendPacket) {
         	plugin.PlayerModPacketListener.ModInventory.put(player.getName(), ModItems);
 			if(PrivatChest.debug())plugin.log.info("Packet 230: "+event.getPlayer().getName()+": ModInventory");
 			plugin.sendModLoaderPacket(player);
-        }
-        if(playerLoc != null) {
-            player.teleport(playerLoc);
-	    	ReTeleportThread.add(10,player,playerLoc);
-        } else {
-        	plugin.teleporthandler.HandleJoin(event);
         }
     }
 

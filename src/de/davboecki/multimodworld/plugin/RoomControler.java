@@ -7,6 +7,7 @@ import net.minecraft.server.ModLoaderMp;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 
 import org.bukkit.block.Chest;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -25,16 +26,20 @@ public class RoomControler {
     	plugin = pplugin;
     }
     
-    public boolean playerhasRoom(Player player){
-        if (plugin.Settings.ExchangeWorlds.get(player.getWorld().getName()).ChestRooms.containsKey(player.getName())) {
-        	return true;
-        } else {
-        	return false;
-        }
-    }
-    
+    public boolean playerhasRoom(Player player) {
+    	if(!plugin.Settings.ExchangeWorlds.containsKey(player.getWorld().getName())) return false;
+        return plugin.Settings.ExchangeWorlds.get(player.getWorld().getName()).ChestRooms.containsKey(player.getName()) && player.hasPermission("privatchest.hasroom");
+     }
+    public boolean playerhasRoomInWorld(Player player,World world) {
+        return plugin.Settings.ExchangeWorlds.get(world.getName()).ChestRooms.containsKey(player.getName()) && player.hasPermission("privatchest.hasroom");
+     }
+
     public RoomLocation getRoomlocation(Player player){
         return plugin.Settings.ExchangeWorlds.get(player.getWorld().getName()).ChestRooms.get(player.getName());
+    }
+
+    public RoomLocation getRoomlocationForWorld(Player player,World world){
+        return plugin.Settings.ExchangeWorlds.get(world.getName()).ChestRooms.get(player.getName());
     }
     
     public boolean RoomExists(HashMap<String,RoomLocation> ChestRooms,RoomLocation RoomLocation){
@@ -136,6 +141,17 @@ public class RoomControler {
         }
     }
     
+    public Location getPlayerLobbyLocation(Player player, World world){
+    	Location loc = new Location(world, 6.5, 8, 6.5);
+    	CheckItem Checker = new CheckItem(plugin, player.getWorld().getName());
+        if (plugin.getSettings().ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Mod")) {
+            loc = new Location(player.getWorld(), 6.5 + 16, 8, 6.5);
+        } else {
+            loc = new Location(player.getWorld(), 6.5, 8, 6.5);
+        }
+        return loc;
+    }
+    
     public Location playertospawn(Player player) {
         Location loc = new Location(player.getWorld(), 6.5, 8, 6.5);
         CheckItem Checker = new CheckItem(plugin, player.getWorld().getName());
@@ -149,13 +165,12 @@ public class RoomControler {
             loc.setZ((plugin.RoomControl.getRoomlocation(player).getZ() * 7) +
                 3.5);
         } else {
-            if (plugin.getSettings().ExchangeWorlds.get(player.getWorld().getName()).WorldType == "Mod") {
+            if (plugin.getSettings().ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Mod")) {
                 loc = new Location(player.getWorld(), 6.5 + 16, 8, 6.5);
             } else {
                 loc = new Location(player.getWorld(), 6.5, 8, 6.5);
             }
         }
-
         return loc;
     }
     
