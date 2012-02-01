@@ -129,11 +129,16 @@ public class PrivatChest extends JavaPlugin {
         
         log.info("[PrivatChest] Plugin v"+this.getDescription().getVersion()+" has been enabled!");
         if(MultiModWorld != null) {
-        	String ModVersion = de.davboecki.multimodworld.server.ModChecker.getVerion();
+        	String ModVersion = de.davboecki.multimodworld.server.ModChecker.getVersion();
+        	boolean modcorrect = de.davboecki.multimodworld.server.ModChecker.checkNetModded();
         	String MultiModWorldVersion = "v1.1.0";
-        	if(!ModVersion.equalsIgnoreCase(MultiModWorldVersion)) {
+        	boolean correctversion = ModVersion.equalsIgnoreCase(MultiModWorldVersion);
+        	if(!correctversion || !modcorrect) {
         		this.getServer().getPluginManager().disablePlugin(this);
-                log.info("[MultiModWorld] Mod "+ModVersion+" has been found. But "+MultiModWorldVersion+" is required.");
+        		if(!correctversion)
+        			log.severe("[MultiModWorld] Mod "+ModVersion+" has been found. But "+MultiModWorldVersion+" is required.");
+        		if(!modcorrect)
+        			log.severe("[MultiModWorld] Mod "+ModVersion+" has been found. Server mod not correctly installed.");
         	} else {
         		log.info("[MultiModWorld] Mod "+ModVersion+" has been enabled.");
         	}
