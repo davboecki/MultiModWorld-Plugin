@@ -87,7 +87,7 @@ public class PrivatChest extends JavaPlugin {
     	return Settings;
     }
     
-    public void onEnable() {
+	public void onEnable() {
     	
     	boolean flag = false;
 		try {
@@ -131,7 +131,7 @@ public class PrivatChest extends JavaPlugin {
         if(MultiModWorld != null) {
         	String ModVersion = de.davboecki.multimodworld.server.ModChecker.getVersion();
         	boolean modcorrect = de.davboecki.multimodworld.server.ModChecker.checkNetModded();
-        	String MultiModWorldVersion = "v1.1.0";
+        	String MultiModWorldVersion = "v1.1.1";
         	boolean correctversion = ModVersion.equalsIgnoreCase(MultiModWorldVersion);
         	if(!correctversion || !modcorrect) {
         		this.getServer().getPluginManager().disablePlugin(this);
