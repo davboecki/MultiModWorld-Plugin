@@ -5,6 +5,8 @@ import java.util.concurrent.Callable;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerListener;
@@ -21,7 +23,8 @@ public class ConfirmListener extends PlayerListener {
 	public ConfirmListener(PrivatChest instance){
 		plugin = instance;
 	}
-		
+
+    @EventHandler
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event){
 		if(event.isCancelled()) return;
 		if(Task.containsKey(event.getPlayer().getName())){
@@ -37,7 +40,8 @@ public class ConfirmListener extends PlayerListener {
 			}
 		}
 	}
-	
+
+    @EventHandler
 	public void onPlayerChat(PlayerChatEvent event) {
 		if(Task.containsKey(event.getPlayer().getName())){
 			String msg = event.getMessage();

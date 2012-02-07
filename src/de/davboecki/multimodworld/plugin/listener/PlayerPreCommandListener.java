@@ -1,6 +1,8 @@
 package de.davboecki.multimodworld.plugin.listener;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerListener;
 
@@ -13,7 +15,8 @@ public class PlayerPreCommandListener extends PlayerListener {
 	public PlayerPreCommandListener(PrivatChest instance){
 		plugin = instance;
 	}
-	
+
+    @EventHandler
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event){
 		String Message = event.getMessage();
 		if(Message.indexOf(" ") < 1) return;

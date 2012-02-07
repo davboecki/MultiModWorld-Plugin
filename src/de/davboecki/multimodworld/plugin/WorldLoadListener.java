@@ -1,5 +1,7 @@
 package de.davboecki.multimodworld.plugin;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.world.WorldListener;
 import org.bukkit.event.world.WorldLoadEvent;
 
@@ -12,7 +14,8 @@ public class WorldLoadListener extends WorldListener{
 	WorldLoadListener(PrivatChest instance){
 		plugin = instance;
 	}
-	
+
+    @EventHandler
 	public void onWorldLoad(WorldLoadEvent event){
 		if(event.getWorld().getGenerator() == plugin.Worldgen) return;
 		String WorldName = event.getWorld().getName();

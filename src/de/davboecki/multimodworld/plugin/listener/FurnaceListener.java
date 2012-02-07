@@ -1,5 +1,7 @@
 package de.davboecki.multimodworld.plugin.listener;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.inventory.InventoryListener;
@@ -14,7 +16,8 @@ public class FurnaceListener extends InventoryListener {
 	public FurnaceListener(PrivatChest plugin){
 		this.plugin = plugin;
 	}
-	
+
+    @EventHandler(priority = EventPriority.HIGHEST)
 	public void onFurnaceSmelt(FurnaceSmeltEvent event) {
 		ItemStack Result = event.getResult();
 		if(Result != null){
@@ -27,6 +30,7 @@ public class FurnaceListener extends InventoryListener {
 		  }
 	}
 
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onFurnaceBurn(FurnaceBurnEvent event) {
 		ItemStack Fuel = event.getFuel();
 		if(Fuel != null){

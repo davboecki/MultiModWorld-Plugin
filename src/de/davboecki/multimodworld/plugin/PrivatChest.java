@@ -102,24 +102,15 @@ public class PrivatChest extends JavaPlugin {
 		}
     	
         PluginManager pm = this.getServer().getPluginManager();
-        pm.registerEvent(Event.Type.PLAYER_JOIN, PrivatChestPlayerListener, Event.Priority.Highest, this);
-        pm.registerEvent(Event.Type.PLAYER_RESPAWN, PrivatChestPlayerListener, Event.Priority.Highest, this);
-        pm.registerEvent(Event.Type.PLAYER_MOVE, PrivatChestPlayerListener, Event.Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_ITEM_HELD, PrivatChestPlayerListener, Event.Priority.Highest, this);
-        pm.registerEvent(Event.Type.PLAYER_INTERACT, PrivatChestPlayerListener, Event.Priority.Highest, this);
-        pm.registerEvent(Event.Type.PLAYER_QUIT, PrivatChestPlayerListener, Event.Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_TELEPORT, PrivatChestPlayerListener, Event.Priority.Highest, this);
-        pm.registerEvent(Event.Type.CREATURE_SPAWN, CreatueSpawnListener, Event.Priority.Normal, this);
-        pm.registerEvent(Event.Type.BLOCK_PLACE, PrivatChestBlockListener, Event.Priority.Normal, this);
-        pm.registerEvent(Event.Type.BLOCK_BREAK, PrivatChestBlockListener, Event.Priority.Normal, this);
-        pm.registerEvent(Event.Type.WORLD_LOAD, WorldLoadListener, Event.Priority.Normal, this);
-        pm.registerEvent(Event.Type.CUSTOM_EVENT, PlayerModPacketListener, Event.Priority.Normal, this);
-        pm.registerEvent(Event.Type.FURNACE_BURN, FurnaceListener, Event.Priority.Highest, this);
-        pm.registerEvent(Event.Type.FURNACE_SMELT, FurnaceListener, Event.Priority.Highest, this);
-        pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, PlayerPreCommandListener, Event.Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_CHAT, confirmlistener, Event.Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, confirmlistener, Event.Priority.Normal, this);
-        pm.registerEvent(Event.Type.CUSTOM_EVENT, PacketListener, Event.Priority.Normal, this);
+        pm.registerEvents(PrivatChestPlayerListener, this);
+        pm.registerEvents(CreatueSpawnListener, this);
+        pm.registerEvents(PrivatChestBlockListener, this);
+        pm.registerEvents(WorldLoadListener, this);
+        pm.registerEvents(PlayerModPacketListener, this);
+        pm.registerEvents(FurnaceListener, this);
+        pm.registerEvents(PlayerPreCommandListener, this);
+        pm.registerEvents(confirmlistener, this);
+        pm.registerEvents(PacketListener, this);
         Settings.load();
 
         this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new ReTeleportThread(this), 1, 1);

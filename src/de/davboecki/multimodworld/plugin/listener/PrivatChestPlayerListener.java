@@ -13,6 +13,8 @@ import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -48,11 +50,13 @@ public class PrivatChestPlayerListener extends PlayerListener {
     public PrivatChestPlayerListener(PrivatChest instance) {
         plugin = instance;
     }
-    
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
     	plugin.teleporthandler.onPlayerTeleport(event);
     }
 
+    @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
         if(plugin.ModPacketOK.contains(player.getName())){
@@ -67,7 +71,8 @@ public class PrivatChestPlayerListener extends PlayerListener {
         	plugin.ModPacketOK = newModPackOK;
         }
     }
-    
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onItemHeldChange(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
         if(!ItemCheckHandler.isItemAllowed(event.getPlayer().getWorld().getName(), event.getPlayer().getInventory().getItem(event.getNewSlot()).getTypeId())  && !plugin.PlayerPositionCheck.PlayerinRoom(event.getPlayer())) {
@@ -85,11 +90,13 @@ public class PrivatChestPlayerListener extends PlayerListener {
         	event.getPlayer().getInventory().setItem(event.getPreviousSlot(), Old);
         }
     }
-
+    
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
     	plugin.teleporthandler.onPlayerRespawn(event);
     }
-
+    
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         World world = player.getWorld();
@@ -138,6 +145,7 @@ public class PrivatChestPlayerListener extends PlayerListener {
         }
     }
 
+    @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
     	
     	handleMoveTaskCall(event);
@@ -277,6 +285,7 @@ public class PrivatChestPlayerListener extends PlayerListener {
     	return true;
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerInteract(PlayerInteractEvent event){
     	if(event.getPlayer().getWorld().getGenerator() != plugin.Worldgen) return;
     	if(!plugin.PlayerPositionCheck.PlayerinRoom(event.getPlayer())) return;

@@ -7,6 +7,8 @@ import org.bukkit.block.Block;
 
 import org.bukkit.entity.Player;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -46,7 +48,8 @@ public class PrivatChestBlockListener extends BlockListener {
         return true;
     }
 
-    
+
+    @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
     	if(event.getBlock().getWorld().getGenerator() != plugin.Worldgen) return;
     	event.setCancelled(true);
@@ -65,6 +68,7 @@ public class PrivatChestBlockListener extends BlockListener {
         }
     }
 
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
     	if(event.getBlock().getWorld().getGenerator() != plugin.Worldgen) return;
         Player player = event.getPlayer();

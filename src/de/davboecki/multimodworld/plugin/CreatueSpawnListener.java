@@ -4,6 +4,8 @@ import org.bukkit.entity.Entity;
 
 import org.bukkit.World;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityListener;
 
@@ -13,7 +15,8 @@ public class CreatueSpawnListener extends EntityListener{
 	CreatueSpawnListener(PrivatChest pplugin){
 		plugin = pplugin;
 	}
-	
+
+    @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent event){
     	Entity entity = event.getEntity();
     	World world = entity.getWorld();

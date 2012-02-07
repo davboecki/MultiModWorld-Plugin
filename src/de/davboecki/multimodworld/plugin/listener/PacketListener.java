@@ -2,16 +2,17 @@ package de.davboecki.multimodworld.plugin.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.entity.Player;
 
 import net.minecraft.server.Packet;
 import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.Packet5EntityEquipment;
 import de.davboecki.multimodworld.plugin.PrivatChest;
-import de.davboecki.multimodworld.server.packethandleevent.PacketHandleEventListener;
 import de.davboecki.multimodworld.server.packethandleevent.PacketSendEvent;
 
-public class PacketListener extends PacketHandleEventListener {
+public class PacketListener implements Listener {
 	
 	PrivatChest plugin;
 	public boolean AllowModLoaderPacket = false;
@@ -20,6 +21,7 @@ public class PacketListener extends PacketHandleEventListener {
 		plugin = instance;
 	}
 	
+	@EventHandler
 	public void onPacketSendEvent(PacketSendEvent event) {
 		if(plugin.MultiModWorld == null) return;
 		try {

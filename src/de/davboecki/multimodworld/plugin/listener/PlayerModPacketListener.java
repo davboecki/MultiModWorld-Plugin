@@ -7,16 +7,17 @@ import java.util.concurrent.Callable;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 import de.davboecki.multimodworld.plugin.PrivatChest;
 import de.davboecki.multimodworld.plugin.reteleport.ReTeleportThread;
-import de.davboecki.multimodworld.server.modhandleevent.ModHandleEventListener;
 import de.davboecki.multimodworld.server.modhandleevent.ModsMissingHandleEvent;
 import de.davboecki.multimodworld.server.modhandleevent.ModsOKHandleEvent;
 
 
-public class PlayerModPacketListener extends ModHandleEventListener{
+public class PlayerModPacketListener implements Listener{
 	
 	PrivatChest plugin;
 	public ArrayList<String> TeleportPlayer = new ArrayList<String>();
@@ -33,7 +34,8 @@ public class PlayerModPacketListener extends ModHandleEventListener{
 	public PlayerModPacketListener(PrivatChest instance){
 		plugin = instance;
 	}
-
+	
+	@EventHandler
 	public void onModsMissingHandle(ModsMissingHandleEvent event) {
 		Player player = event.getPlayer();
 		ArrayList<String> Missing = event.getMissingModList();
@@ -43,6 +45,7 @@ public class PlayerModPacketListener extends ModHandleEventListener{
 		}
 	}
 	
+	@EventHandler
 	public void onModsOKHandle(ModsOKHandleEvent event){
 		if(IDBoolean.containsKey(event.getPlayer().getName())){
 			if(!IDBoolean.get(event.getPlayer().getName())){
