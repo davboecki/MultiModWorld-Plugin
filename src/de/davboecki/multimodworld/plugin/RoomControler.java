@@ -143,11 +143,11 @@ public class RoomControler {
     
     public Location getPlayerLobbyLocation(Player player, World world){
     	Location loc = new Location(world, 6.5, 8, 6.5);
-    	CheckItem Checker = new CheckItem(plugin, player.getWorld().getName());
-        if (plugin.getSettings().ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Mod")) {
-            loc = new Location(player.getWorld(), 6.5 + 16, 8, 6.5);
+    	CheckItem Checker = new CheckItem(plugin, world.getName());
+        if (plugin.getSettings().ExchangeWorlds.get(world.getName()).WorldType.equalsIgnoreCase("Mod")) {
+            loc = new Location(world, 6.5 + 16, 8, 6.5);
         } else {
-            loc = new Location(player.getWorld(), 6.5, 8, 6.5);
+            loc = new Location(world, 6.5, 8, 6.5);
         }
         return loc;
     }
