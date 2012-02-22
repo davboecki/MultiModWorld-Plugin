@@ -442,8 +442,8 @@ public class CommandHandler {
 			return true;
 		}
 		if(args[4].equalsIgnoreCase("remove")){
-			if(plugin.Settings.GroupItemLists.get(args[3]).contains((long)value)){
-				plugin.Settings.GroupItemLists.get(args[3]).remove((long)value);
+			if(plugin.Settings.GroupItemLists.get(args[3]).contains(value)){
+				plugin.Settings.GroupItemLists.get(args[3]).remove((Object)value);
 				sender.sendMessage((sender instanceof Player?ChatColor.GREEN:Color.GREEN) + "Id removed.");
 				return true;
 			} else {
@@ -451,7 +451,7 @@ public class CommandHandler {
 				return true;
 			}
 		} else if(args[4].equalsIgnoreCase("add")){
-			if(plugin.Settings.GroupItemLists.get(args[3]).contains((long)value)){
+			if(plugin.Settings.GroupItemLists.get(args[3]).contains(value)){
     			sender.sendMessage((sender instanceof Player?ChatColor.RED:Color.RED) + "Id already listed.");
 				return true;
 			} else {
