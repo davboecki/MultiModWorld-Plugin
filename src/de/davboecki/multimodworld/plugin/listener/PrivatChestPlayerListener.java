@@ -31,6 +31,7 @@ import de.davboecki.multimodworld.plugin.ItemCheckHandler;
 import de.davboecki.multimodworld.plugin.PrivatChest;
 import de.davboecki.multimodworld.plugin.commandhandler.CallableObjects;
 import de.davboecki.multimodworld.plugin.reteleport.ReTeleportThread;
+import de.davboecki.multimodworld.plugin.reteleport.TeleportHandler;
 import de.davboecki.multimodworld.plugin.settings.Settings;
 
 import java.util.ArrayList;
@@ -40,8 +41,6 @@ import java.util.Map;
 
 public class PrivatChestPlayerListener extends PlayerListener {
     public static PrivatChest plugin;
-    
-    private boolean isLocalTeleport=false;
     
     private static Map<String, Boolean> Teleport = new HashMap<String, Boolean>();
     private static Map<String, Double> Timer = new HashMap<String, Double>();
@@ -71,7 +70,9 @@ public class PrivatChestPlayerListener extends PlayerListener {
         	plugin.ModPacketOK = newModPackOK;
         }
     }
-
+    
+    //Disabled Because of the new Packet Checking
+/*
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onItemHeldChange(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
@@ -90,7 +91,7 @@ public class PrivatChestPlayerListener extends PlayerListener {
         	event.getPlayer().getInventory().setItem(event.getPreviousSlot(), Old);
         }
     }
-    
+*/
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
     	plugin.teleporthandler.onPlayerRespawn(event);
@@ -240,8 +241,9 @@ public class PrivatChestPlayerListener extends PlayerListener {
                     }
                 }
 
+                /*
                 if (plugin.getSettings().ExchangeWorlds.get(player.getWorld().getName()).WorldType == "Mod") {
-                    if (!new CheckItem(plugin,event.getPlayer().getWorld().getName()).CheckaItem(player.getItemInHand()) &&plugin.PlayerPositionCheck.PlayerinLobby(player)) {
+                    if (!new CheckItem(plugin,event.getPlayer().getWorld().getName()).CheckaItem(player.getItemInHand()) && plugin.PlayerPositionCheck.PlayerinLobby(player)) {
                         Location playerSpawn = plugin.RoomControl.playertospawn(player);
                         playerSpawn.setX((plugin.RoomControl.getRoomlocation(player).getX() * 7) + 3.5);
                         playerSpawn.setY(2);
@@ -249,12 +251,13 @@ public class PrivatChestPlayerListener extends PlayerListener {
                         player.teleport(playerSpawn);
                     }
                 }
+                */
             }
         }
     }
     
     private void handleMoveTaskCall(PlayerMoveEvent event) {
-    	if(event.getFrom().getX()!=event.getTo().getX() || event.getFrom().getZ()!=event.getTo().getZ()) {
+       	if(event.getFrom().getX() != event.getTo().getX() || event.getFrom().getZ()!=event.getTo().getZ()) {
 			if(MoveTasks.size() > 0) {
 	    		for(String PlayerName:MoveTasks.keySet()) {
 	    				try {
@@ -266,7 +269,7 @@ public class PrivatChestPlayerListener extends PlayerListener {
 		    						if(flag) {
 		    							MoveTasks.remove(PlayerName);
 		    						} else {
-		    							event.setCancelled(true);
+		    							//event.getPlayer().teleport(event.getFrom());
 		    						}
 		    					}
 	    					}

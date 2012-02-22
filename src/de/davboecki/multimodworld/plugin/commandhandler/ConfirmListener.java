@@ -49,7 +49,7 @@ public class ConfirmListener extends PlayerListener {
 				event.getPlayer().sendMessage("Not a valid answer. Please enter <yes/no|true/flase|on/off|1/0>");
 			}
 			boolean flag = msg.equalsIgnoreCase("true") || msg.equalsIgnoreCase("on") || msg.equalsIgnoreCase("1") || msg.equalsIgnoreCase("yes");
-			if(!handleAnswer(flag,event.getPlayer().getName())){
+			if(!handleAnswer(flag,event.getPlayer().getName(),event.getPlayer())){
 				event.getPlayer().sendMessage(ChatColor.RED + "Error: Could not handle answer.");
 			} else {
 				//event.getPlayer().sendMessage(ChatColor.GREEN + "Answer handled.");
@@ -71,16 +71,16 @@ public class ConfirmListener extends PlayerListener {
 		MorePageDisplay.put(name, MorePageDisplayinput);
 	}
 	
-	public boolean handleAnswer(boolean flag,String name){
+	public boolean handleAnswer(boolean flag,String name, CommandSender sender){
 		if(!Task.containsKey(name)) return false;
-		if(flag){
+		if(flag) {
 			try {
 				Object Erg;
 				if((Erg = Task.get(name).call()) != null)
 				{
 					if(Erg instanceof Boolean){
 						boolean Ergflag = (Boolean)Erg;
-						if(!Ergflag){
+						if(!Ergflag) {
 							return false;
 						}
 					}
@@ -89,6 +89,8 @@ public class ConfirmListener extends PlayerListener {
 				e.printStackTrace();
 				return false;
 			}
+		} else {
+			sender.sendMessage(ChatColor.GREEN + "Answer handled.");
 		}
 		Task.remove(name);
 		return true;

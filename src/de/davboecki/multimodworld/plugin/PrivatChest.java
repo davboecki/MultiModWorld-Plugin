@@ -42,6 +42,8 @@ import de.davboecki.multimodworld.plugin.listener.*;
 import de.davboecki.multimodworld.plugin.reteleport.ReTeleportThread;
 import de.davboecki.multimodworld.plugin.reteleport.TeleportHandler;
 import de.davboecki.multimodworld.plugin.yaml.MyYamlConstructor;
+import de.davboecki.multimodworld.server.ForgeLoginHooks;
+import de.davboecki.multimodworld.server.ModChecker;
 import de.davboecki.multimodworld.server.plugin.IModWorldHandlePlugin;
 import de.davboecki.multimodworld.plugin.settings.ExchangeWorldSetting;
 import de.davboecki.multimodworld.plugin.settings.Settings;
@@ -99,6 +101,7 @@ public class PrivatChest extends JavaPlugin {
 		if(flag) {
 	        log.info("[PrivatChest] IModWorldHandlePlugin class found!");
 			MultiModWorld = new MultiModWorld(this);
+			ModChecker.registerIModWorldHandlePlugin(MultiModWorld);
 		}
     	
         PluginManager pm = this.getServer().getPluginManager();
@@ -114,7 +117,7 @@ public class PrivatChest extends JavaPlugin {
         Settings.load();
 
         this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new ReTeleportThread(this), 1, 1);
-        this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new HandItemThread(this), 1, 1);
+        //this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new HandItemThread(this), 1, 1);
         
         commandhandler = new CommandHandler(this);
         
@@ -122,7 +125,7 @@ public class PrivatChest extends JavaPlugin {
         if(MultiModWorld != null) {
         	String ModVersion = de.davboecki.multimodworld.server.ModChecker.getVersion();
         	boolean modcorrect = de.davboecki.multimodworld.server.ModChecker.checkNetModded();
-        	String MultiModWorldVersion = "v1.1.1";
+        	String MultiModWorldVersion = "v1.1.2";
         	boolean correctversion = ModVersion.equalsIgnoreCase(MultiModWorldVersion);
         	if(!correctversion || !modcorrect) {
         		this.getServer().getPluginManager().disablePlugin(this);
@@ -146,7 +149,9 @@ public class PrivatChest extends JavaPlugin {
     
     public void sendModLoaderPacket(Player player){
     	PacketListener.AllowModLoaderPacket = true;
-    	ModLoaderMp.HandleAllLogins(((CraftPlayer) player).getHandle());
+    	if(MultiModWorld != null) {
+    		ForgeLoginHooks.LogintoMod(player);
+    	}
     	PacketListener.AllowModLoaderPacket = false;
     }
     

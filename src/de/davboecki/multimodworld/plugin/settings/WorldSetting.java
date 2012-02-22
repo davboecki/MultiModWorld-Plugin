@@ -10,6 +10,7 @@ public class WorldSetting {
 		AllIdsAllowed = false;
 		AllEntitiesAllowed = false;
 		CheckTeleport = false;
+		UseVanillaRecipes = false;
 	}
 	
 	public String ItemList;
@@ -17,5 +18,6 @@ public class WorldSetting {
 	public Boolean AllIdsAllowed;
 	public Boolean AllEntitiesAllowed;
 	public Boolean CheckTeleport;
+	public Boolean UseVanillaRecipes;
 	public HashMap<String,Boolean> Tags;
 }

@@ -1,6 +1,7 @@
 package de.davboecki.multimodworld.plugin;
 
 import net.minecraft.server.Entity;
+import de.davboecki.multimodworld.plugin.settings.Settings;
 import de.davboecki.multimodworld.server.plugin.IModWorldHandlePlugin;
 
 public class MultiModWorld implements IModWorldHandlePlugin{
@@ -61,7 +62,11 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 
 	@Override
 	public boolean hasWorldSetting(String WorldName, String Setting) {
-		return plugin.Settings.getTag(WorldName,Setting);
+		if(Setting.equals("UseVanillaRecipes")) {
+			return Settings.getWorldSetting(WorldName).UseVanillaRecipes;
+		} else {
+			return plugin.Settings.getTag(WorldName,Setting);
+		}
 	}
 
 	@Override

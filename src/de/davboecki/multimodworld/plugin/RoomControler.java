@@ -31,14 +31,17 @@ public class RoomControler {
         return plugin.Settings.ExchangeWorlds.get(player.getWorld().getName()).ChestRooms.containsKey(player.getName()) && player.hasPermission("privatchest.hasroom");
      }
     public boolean playerhasRoomInWorld(Player player,World world) {
+    	if(!plugin.Settings.ExchangeWorlds.containsKey(world.getName())) return false;
         return plugin.Settings.ExchangeWorlds.get(world.getName()).ChestRooms.containsKey(player.getName()) && player.hasPermission("privatchest.hasroom");
      }
 
     public RoomLocation getRoomlocation(Player player){
+    	if(!plugin.Settings.ExchangeWorlds.containsKey(player.getWorld().getName())) return null;
         return plugin.Settings.ExchangeWorlds.get(player.getWorld().getName()).ChestRooms.get(player.getName());
     }
 
     public RoomLocation getRoomlocationForWorld(Player player,World world){
+    	if(!plugin.Settings.ExchangeWorlds.containsKey(world.getName())) return null;
         return plugin.Settings.ExchangeWorlds.get(world.getName()).ChestRooms.get(player.getName());
     }
     
@@ -144,12 +147,16 @@ public class RoomControler {
     public Location getPlayerLobbyLocation(Player player, World world){
     	Location loc = new Location(world, 6.5, 8, 6.5);
     	CheckItem Checker = new CheckItem(plugin, world.getName());
-        if (plugin.getSettings().ExchangeWorlds.get(world.getName()).WorldType.equalsIgnoreCase("Mod")) {
-            loc = new Location(world, 6.5 + 16, 8, 6.5);
-        } else {
-            loc = new Location(world, 6.5, 8, 6.5);
-        }
-        return loc;
+    	if(plugin.getSettings().ExchangeWorlds.containsKey(world.getName())){
+	        if (plugin.getSettings().ExchangeWorlds.get(world.getName()).WorldType.equalsIgnoreCase("Mod")) {
+	            loc = new Location(world, 6.5 + 16, 8, 6.5);
+	        } else{
+	            loc = new Location(world, 6.5, 8, 6.5);
+	        }
+	        return loc;
+    	} else {
+    		return null;
+    	}
     }
     
     public Location playertospawn(Player player) {

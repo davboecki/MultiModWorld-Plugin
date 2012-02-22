@@ -52,12 +52,12 @@ public class CommandHandler {
     			sender.sendMessage((sender instanceof Player?ChatColor.GREEN:Color.GREEN) + "Done.");
     			return true;
     		} else if(IsCommand(args,0,"yes")){
-    			if(plugin.confirmlistener.handleAnswer(true,sender instanceof Player ? ((CraftPlayer)sender).getName() : "[Console]")){
+    			if(plugin.confirmlistener.handleAnswer(true,sender instanceof Player ? ((CraftPlayer)sender).getName() : "[Console]",sender)){
     				sender.sendMessage((sender instanceof Player?ChatColor.RED:Color.RED) + "Error: Could not handle answer.");
     			}
     			return true;
     		} else if(IsCommand(args,0,"no")){
-    			if(plugin.confirmlistener.handleAnswer(false,sender instanceof Player ? ((CraftPlayer)sender).getName() : "[Console]")){
+    			if(plugin.confirmlistener.handleAnswer(false,sender instanceof Player ? ((CraftPlayer)sender).getName() : "[Console]",sender)){
     				sender.sendMessage((sender instanceof Player?ChatColor.RED:Color.RED) + "Error: Could not handle answer.");
     			}
     			return true;

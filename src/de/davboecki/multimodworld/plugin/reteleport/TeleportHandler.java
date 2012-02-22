@@ -65,6 +65,7 @@ public class TeleportHandler {
 			for(World pWorld : plugin.getServer().getWorlds()){
 				if(!Settings.getWorldSetting(pWorld.getName()).CheckTeleport) {
 					TelWorld = pWorld;
+					break;
 				}
 			}
 		}
@@ -74,7 +75,7 @@ public class TeleportHandler {
 		return TelWorld;
     }
     
-    public Location getPlayerExchangeWorldLocation(Player player){
+    public Location getPlayerExchangeWorldLocation(Player player) {
     	World firstworld = getFirstModChangeWorld();
     	if(firstworld.getGenerator() == plugin.Worldgen) {
     		if(plugin.RoomControl.playerhasRoomInWorld(player,firstworld)){
@@ -88,11 +89,11 @@ public class TeleportHandler {
     	}
     }
     
-    public void teleportPlayerIntoExchangeWorld(Player player) {
+    /*public void teleportPlayerIntoExchangeWorld(Player player) {
     	isLocalTeleport = true;
     	player.teleport(getPlayerExchangeWorldLocation(player));
     	isLocalTeleport = false;
-    }
+    }*/
     
     public void onPlayerTeleport(PlayerTeleportEvent event) {
     	if(isLocalTeleport) return;
@@ -101,8 +102,13 @@ public class TeleportHandler {
     	if(Settings.getWorldSetting(world.getName()).CheckTeleport && !Settings.getInstance().ExchangeWorlds.containsKey(world.getName())) {
 	    	if(!plugin.ModPacketOK.contains(player.getName())) {
 	    		plugin.PrivatChestPlayerListener.addMoveTask(player.getName(),new CallableObjects(new Object[]{event.getPlayer(),plugin.confirmlistener},plugin){
-					@Override
-					public Object call() throws Exception {
+    				long LastTime;
+    	    		@Override
+    				public Object call() throws Exception {
+    	    			if(LastTime + 2000 > System.currentTimeMillis()) {
+    	    				return false;
+    	    			}
+    	    			LastTime = System.currentTimeMillis();
 						if(((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName()))((Player)args[0]).sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
 						return !((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName());
 					}
@@ -209,8 +215,13 @@ public class TeleportHandler {
 	    				}
 	        		},player.getName());
 	    	    	plugin.PrivatChestPlayerListener.addMoveTask(player.getName(),new CallableObjects(new Object[]{event.getPlayer(),plugin.confirmlistener},plugin){
-	    				@Override
+	    				long LastTime;
+	    	    		@Override
 	    				public Object call() throws Exception {
+	    	    			if(LastTime + 2000 > System.currentTimeMillis()) {
+	    	    				return false;
+	    	    			}
+	    	    			LastTime = System.currentTimeMillis();
 	    					if(((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName()))((Player)args[0]).sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
 	    					return !((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName());
 	    				}
