@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import de.davboecki.multimodworld.server.ForgeLoginHooks;
+
 
 public class RoomControler {
 
@@ -287,17 +289,17 @@ public class RoomControler {
             }
         } else if (Target == "OUT_MOD") {
         	if(plugin.Settings.ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Mod")){
-        		if(!plugin.ModPacketOK.contains(player.getName())){
+        		if(!ForgeLoginHooks.isPlayerConfirmed(player)){
         			plugin.PlayerModPacketListener.TeleportPlayer.add(player.getName());
         			if(plugin.debug())plugin.log.info("Packet 230: "+player.getName()+": RoomControler");
         			plugin.sendModLoaderPacket(player);
         		} else {
-    	        Location TeleportLoc = new Location(player.getWorld(), 26.5, 8,
-                    6.5, 90, 0);
-
-    	        player.teleport(TeleportLoc);
-    	        player.sendMessage("§2Teleportiert");
-    	        player.sendMessage("You are now in the §1Mod Stargate§f Room");
+	    	        Location TeleportLoc = new Location(player.getWorld(), 26.5, 8,
+	                    6.5, 90, 0);
+	
+	    	        player.teleport(TeleportLoc);
+	    	        player.sendMessage("§2Teleportiert");
+	    	        player.sendMessage("You are now in the §1Mod Stargate§f Room");
         		}
     	        return true;
         	} else if(plugin.Settings.ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Creative")){

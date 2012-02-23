@@ -10,6 +10,7 @@ import net.minecraft.server.Packet;
 import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.Packet5EntityEquipment;
 import de.davboecki.multimodworld.plugin.PrivatChest;
+import de.davboecki.multimodworld.server.ForgeLoginHooks;
 import de.davboecki.multimodworld.server.packethandleevent.PacketSendEvent;
 
 public class PacketListener implements Listener {
@@ -29,12 +30,12 @@ public class PacketListener implements Listener {
 			if(packet == null) return;
 			if(event.getPlayer() == null) return;
 			if(packet instanceof Packet230ModLoader){
-				if(!plugin.ModPacketOK.contains(event.getPlayer().getName()) && !AllowModLoaderPacket){
+				if(!ForgeLoginHooks.isPlayerConfirmed(event.getPlayer()) && !AllowModLoaderPacket && !ForgeLoginHooks.isPlayerSended(event.getPlayer())){
 					event.setCancelled(true);
 				}
 			} else if(packet instanceof Packet5EntityEquipment){
 				Packet5EntityEquipment Equipment = (Packet5EntityEquipment)packet;
-				if(!plugin.ModPacketOK.contains(event.getPlayer().getName())) {
+				if(!ForgeLoginHooks.isPlayerConfirmed(event.getPlayer())) {
 					if(plugin.MultiModWorld.isIdAllowed(event.getPlayer().getWorld().getName(), Equipment.c)) {
 						Equipment.c = -1;
 						Equipment.d = 0;
@@ -43,7 +44,7 @@ public class PacketListener implements Listener {
 					}
 				}
 			} else if(!packet.getClass().getPackage().getName().equalsIgnoreCase("net.minecraft.server")) {
-				if(!plugin.ModPacketOK.contains(event.getPlayer().getName())){
+				if(!ForgeLoginHooks.isPlayerConfirmed(event.getPlayer())){
 					event.setCancelled(true);
 				}
 			}

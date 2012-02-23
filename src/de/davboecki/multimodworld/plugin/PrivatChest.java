@@ -65,7 +65,7 @@ public class PrivatChest extends JavaPlugin {
     private final PlayerPreCommandListener PlayerPreCommandListener = new PlayerPreCommandListener(this);
     public final ConfirmListener confirmlistener = new ConfirmListener(this);
     public RoomControler RoomControl = new RoomControler(this);
-    public ArrayList<String> ModPacketOK = new ArrayList<String>();
+    //public ArrayList<String> ModPacketOK = new ArrayList<String>();
     public Settings Settings = new Settings(this);
     private Yaml yaml;
     private CommandHandler commandhandler = null;
@@ -150,7 +150,7 @@ public class PrivatChest extends JavaPlugin {
     public void sendModLoaderPacket(Player player){
     	PacketListener.AllowModLoaderPacket = true;
     	if(MultiModWorld != null) {
-    		ForgeLoginHooks.LogintoMod(player);
+    		ModLoaderMp.HandleAllLogins(((CraftPlayer)player).getHandle());
     	}
     	PacketListener.AllowModLoaderPacket = false;
     }
@@ -177,7 +177,7 @@ public class PrivatChest extends JavaPlugin {
     }
     
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-	log.info("[PrivatChest] WorldName: "+worldName);
+    	log.info("[PrivatChest] WorldName: "+worldName);
     	if(!Settings.ExchangeWorlds.containsKey(worldName)){
     		log.info("[PrivatChest] New WorldName: "+worldName);
     		Settings.ExchangeWorlds.put(worldName,new ExchangeWorldSetting());

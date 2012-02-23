@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import de.davboecki.multimodworld.plugin.PrivatChest;
 import de.davboecki.multimodworld.plugin.reteleport.ReTeleportThread;
+import de.davboecki.multimodworld.server.ForgeLoginHooks;
 import de.davboecki.multimodworld.server.modhandleevent.ModsMissingHandleEvent;
 import de.davboecki.multimodworld.server.modhandleevent.ModsOKHandleEvent;
 
@@ -38,6 +39,7 @@ public class PlayerModPacketListener implements Listener{
 	@EventHandler
 	public void onModsMissingHandle(ModsMissingHandleEvent event) {
 		Player player = event.getPlayer();
+		ForgeLoginHooks.removeSended(player);
 		ArrayList<String> Missing = event.getMissingModList();
 		player.sendMessage("§4You are missing the following mods:");
 		for(String Mod: Missing){
@@ -47,42 +49,43 @@ public class PlayerModPacketListener implements Listener{
 	
 	@EventHandler
 	public void onModsOKHandle(ModsOKHandleEvent event){
-		if(IDBoolean.containsKey(event.getPlayer().getName())){
-			if(!IDBoolean.get(event.getPlayer().getName())){
-				event.getPlayer().sendMessage("§bIds worng Linkes.");
-				for(Object MessageObject:IDMessage.get(event.getPlayer().getName()).split("\n")){
-					event.getPlayer().sendMessage((String)MessageObject);
+		Player player = event.getPlayer();
+		if(IDBoolean.containsKey(player.getName())){
+			if(!IDBoolean.get(player.getName())){
+				player.sendMessage("§bIds worng Linkes.");
+				for(Object MessageObject:IDMessage.get(player.getName()).split("\n")){
+					player.sendMessage((String)MessageObject);
 				}
 				return;
 			}
 		}
-		if(!plugin.ModPacketOK.contains(event.getPlayer().getName())) {
-			plugin.ModPacketOK.add(event.getPlayer().getName());
-			if(ModInventory.containsKey(event.getPlayer().getName())){
-				for(ItemStack Item:ModInventory.get(event.getPlayer().getName())){
-					event.getPlayer().getInventory().addItem(Item);
-				}
-				ModInventory.remove(event.getPlayer().getName());
-			}
-			if(ModInventoryHelmet.containsKey(event.getPlayer().getName())){
-				event.getPlayer().getInventory().setHelmet(ModInventoryHelmet.get(event.getPlayer().getName()));
-				ModInventoryHelmet.remove(event.getPlayer().getName());
-			}
-			if(ModInventoryChestplate.containsKey(event.getPlayer().getName())){
-				event.getPlayer().getInventory().setChestplate(ModInventoryChestplate.get(event.getPlayer().getName()));
-				ModInventoryChestplate.remove(event.getPlayer().getName());
-			}
-			if(ModInventoryLeggings.containsKey(event.getPlayer().getName())){
-				event.getPlayer().getInventory().setLeggings(ModInventoryLeggings.get(event.getPlayer().getName()));
-				ModInventoryLeggings.remove(event.getPlayer().getName());
-			}
-			if(ModInventoryBoots.containsKey(event.getPlayer().getName())){
-				event.getPlayer().getInventory().setBoots(ModInventoryBoots.get(event.getPlayer().getName()));
-				ModInventoryBoots.remove(event.getPlayer().getName());
-			}
+		if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
+			ForgeLoginHooks.confirmPlayer(player);
 		}
-		if(TeleportPlayer.contains(event.getPlayer().getName())){
-			Player player = event.getPlayer();
+		ForgeLoginHooks.removeSended(player);
+		if(ModInventory.containsKey(player.getName())){
+			for(ItemStack Item:ModInventory.get(player.getName())){
+				player.getInventory().addItem(Item);
+			}
+			ModInventory.remove(player.getName());
+		}
+		if(ModInventoryHelmet.containsKey(player.getName())){
+			player.getInventory().setHelmet(ModInventoryHelmet.get(player.getName()));
+			ModInventoryHelmet.remove(player.getName());
+		}
+		if(ModInventoryChestplate.containsKey(player.getName())){
+			player.getInventory().setChestplate(ModInventoryChestplate.get(player.getName()));
+			ModInventoryChestplate.remove(player.getName());
+		}
+		if(ModInventoryLeggings.containsKey(player.getName())){
+			player.getInventory().setLeggings(ModInventoryLeggings.get(player.getName()));
+			ModInventoryLeggings.remove(player.getName());
+		}
+		if(ModInventoryBoots.containsKey(player.getName())){
+			player.getInventory().setBoots(ModInventoryBoots.get(player.getName()));
+			ModInventoryBoots.remove(player.getName());
+		}
+		if(TeleportPlayer.contains(player.getName())){
 			Location playerLoc = player.getLocation();
 			if(player.getWorld().getGenerator() != plugin.Worldgen) return;
 			if (Math.floor(playerLoc.getX()) != ((plugin.RoomControl.getRoomlocation(player).getX() * 7) + 5) || Math.floor(playerLoc.getY()) != 2 || Math.floor(playerLoc.getZ()) != ((plugin.RoomControl.getRoomlocation(player).getZ() * 7) + 3)) return;
@@ -93,11 +96,11 @@ public class PlayerModPacketListener implements Listener{
 		    ReTeleportThread.add(20,player,TeleportLoc);
 		    player.sendMessage("§2Teleportiert");
 		    player.sendMessage("You are now in the §1Mod Stargate§f Room");
-		    TeleportPlayer.remove(event.getPlayer());
-		} else if(TeleportDestination.containsKey(event.getPlayer().getName())) {
-			Location loc = TeleportDestination.get(event.getPlayer().getName());
+		    TeleportPlayer.remove(player);
+		} else if(TeleportDestination.containsKey(player.getName())) {
+			Location loc = TeleportDestination.get(player.getName());
 			if(loc.getWorld().getGenerator() == plugin.Worldgen){
-				loc = plugin.RoomControl.playertospawn(event.getPlayer());
+				loc = plugin.RoomControl.playertospawn(player);
 			} else {
 				loc.add(0.0D, -1.0D, 0.0D);
 				Location drueber = loc;
@@ -107,15 +110,15 @@ public class PlayerModPacketListener implements Listener{
 					drueber.add(0.0D, 1.0D, 0.0D);
 				}
 			}
-			if(PrivatChest.debug()) event.getPlayer().sendMessage("ModLoaderMP OK, Teleporting to:"+loc.toString());
-			plugin.teleporthandler.teleport(event.getPlayer(),loc);
-		    ReTeleportThread.add(20,event.getPlayer(),loc);
-			TeleportDestination.remove(event.getPlayer().getName());
-		} else if(CallableAction.containsKey(event.getPlayer().getName())){
+			if(PrivatChest.debug()) player.sendMessage("ModLoaderMP OK, Teleporting to:"+loc.toString());
+			plugin.teleporthandler.teleport(player,loc);
+		    ReTeleportThread.add(20,player,loc);
+			TeleportDestination.remove(player.getName());
+		} else if(CallableAction.containsKey(player.getName())){
 			try{
-				CallableAction.get(event.getPlayer().getName()).call();
+				CallableAction.get(player.getName()).call();
 			} catch(Exception e){
-				event.getPlayer().sendMessage(ChatColor.RED+"Error: Could not execute callable object.");
+				player.sendMessage(ChatColor.RED+"Error: Could not execute callable object.");
 				e.printStackTrace();
 			}
 		}

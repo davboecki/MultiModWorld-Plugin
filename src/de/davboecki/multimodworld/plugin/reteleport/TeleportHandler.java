@@ -34,6 +34,7 @@ import de.davboecki.multimodworld.plugin.RoomLocation;
 import de.davboecki.multimodworld.plugin.commandhandler.CallableObjects;
 import de.davboecki.multimodworld.plugin.commandhandler.ConfirmListener;
 import de.davboecki.multimodworld.plugin.settings.Settings;
+import de.davboecki.multimodworld.server.ForgeLoginHooks;
 
 public class TeleportHandler {
 	
@@ -100,7 +101,7 @@ public class TeleportHandler {
         Player player = event.getPlayer();
         World world = event.getTo().getWorld();
     	if(Settings.getWorldSetting(world.getName()).CheckTeleport && !Settings.getInstance().ExchangeWorlds.containsKey(world.getName())) {
-	    	if(!plugin.ModPacketOK.contains(player.getName())) {
+	    	if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
 	    		plugin.PrivatChestPlayerListener.addMoveTask(player.getName(),new CallableObjects(new Object[]{event.getPlayer(),plugin.confirmlistener},plugin){
     				long LastTime;
     	    		@Override
@@ -160,7 +161,7 @@ public class TeleportHandler {
     		Player player = event.getPlayer();
     		World world = event.getRespawnLocation().getWorld();
         	if(Settings.getWorldSetting(world.getName()).CheckTeleport) {
-    	    	if(!plugin.ModPacketOK.contains(player.getName())){
+    	    	if(!ForgeLoginHooks.isPlayerConfirmed(player)){
     	    		plugin.PlayerModPacketListener.TeleportDestination.put(player.getName(), event.getRespawnLocation());
     	    		if(PrivatChest.debug()) plugin.log.info("Packet 230: "+event.getPlayer().getName()+": onPlayerRespawn, World: "+world.getName());
     	    		plugin.sendModLoaderPacket(player);
@@ -190,48 +191,50 @@ public class TeleportHandler {
     		Player player = event.getPlayer();
     		World world = player.getLocation().getWorld();
         	if(Settings.getWorldSetting(world.getName()).CheckTeleport) {
-    	    	Location Oldloc = player.getLocation();
-    	    	Location loc = getPlayerExchangeWorldLocation(player);
-    	    	event.getPlayer().sendMessage("Join Teleport to:"+ loc.toString());
-    	    	//Set Entity Pos
-    	    	((CraftPlayer)player).getHandle().dimension = ((CraftWorld)loc.getWorld()).getHandle().dimension;
-    	    	((CraftPlayer)player).getHandle().world = ((CraftWorld)loc.getWorld()).getHandle();
-    	    	((CraftPlayer)player).getHandle().locX = loc.getX();
-    	    	((CraftPlayer)player).getHandle().locY = loc.getY();
-    	    	((CraftPlayer)player).getHandle().locZ = loc.getZ();
-    	    	((CraftPlayer)player).getHandle().netServerHandler.sendPacket(new Packet51MapChunk((((int)loc.getX())>>4)<<4, 0, (((int)loc.getZ())>>4)<<4, 16,  ((CraftWorld)loc.getWorld()).getHandle().height, 16, ((CraftWorld)loc.getWorld()).getHandle()));
-    	    	//teleport(player,loc);
-    	    	//ReTeleportThread.add(10,player,loc);
-	        	if(!SendPacket) {
-	    	    	player.sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
-	    	    	plugin.confirmlistener.addTask(new CallableObjects(new Object[]{player,Oldloc},plugin){
-	    				@Override
-	    				public Object call() throws Exception {
-	    		    		plugin.PlayerModPacketListener.TeleportDestination.put(((Player)args[0]).getName(), (Location)args[1]);
-	    		    		if(PrivatChest.debug())plugin.log.info("Packet 230: "+(((Player)args[0]).getName())+": OnJoinConfirm, World: "+((Location)args[1]).getWorld().getName());
-	    					((Player)args[0]).sendMessage(ChatColor.GREEN+"Teleported to old world.");
-	    					plugin.sendModLoaderPacket((Player)args[0]);
-	    					return null;
-	    				}
-	        		},player.getName());
-	    	    	plugin.PrivatChestPlayerListener.addMoveTask(player.getName(),new CallableObjects(new Object[]{event.getPlayer(),plugin.confirmlistener},plugin){
-	    				long LastTime;
-	    	    		@Override
-	    				public Object call() throws Exception {
-	    	    			if(LastTime + 2000 > System.currentTimeMillis()) {
-	    	    				return false;
-	    	    			}
-	    	    			LastTime = System.currentTimeMillis();
-	    					if(((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName()))((Player)args[0]).sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
-	    					return !((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName());
-	    				}
-	    			});
-	        	} else {
-	        		plugin.PlayerModPacketListener.TeleportDestination.put(player.getName(), Oldloc);
-		    		
+        		if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
+	    	    	Location Oldloc = player.getLocation();
+	    	    	Location loc = getPlayerExchangeWorldLocation(player);
+	    	    	event.getPlayer().sendMessage("Join Teleport to:"+ loc.toString());
+	    	    	//Set Entity Pos
+	    	    	((CraftPlayer)player).getHandle().dimension = ((CraftWorld)loc.getWorld()).getHandle().dimension;
+	    	    	((CraftPlayer)player).getHandle().world = ((CraftWorld)loc.getWorld()).getHandle();
+	    	    	((CraftPlayer)player).getHandle().locX = loc.getX();
+	    	    	((CraftPlayer)player).getHandle().locY = loc.getY();
+	    	    	((CraftPlayer)player).getHandle().locZ = loc.getZ();
+	    	    	((CraftPlayer)player).getHandle().netServerHandler.sendPacket(new Packet51MapChunk((((int)loc.getX())>>4)<<4, 0, (((int)loc.getZ())>>4)<<4, 16,  ((CraftWorld)loc.getWorld()).getHandle().height, 16, ((CraftWorld)loc.getWorld()).getHandle()));
+	    	    	//teleport(player,loc);
+	    	    	//ReTeleportThread.add(10,player,loc);
+		        	if(!SendPacket) {
+		    	    	player.sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
+		    	    	plugin.confirmlistener.addTask(new CallableObjects(new Object[]{player,Oldloc},plugin){
+		    				@Override
+		    				public Object call() throws Exception {
+		    		    		plugin.PlayerModPacketListener.TeleportDestination.put(((Player)args[0]).getName(), (Location)args[1]);
+		    		    		if(PrivatChest.debug())plugin.log.info("Packet 230: "+(((Player)args[0]).getName())+": OnJoinConfirm, World: "+((Location)args[1]).getWorld().getName());
+		    					((Player)args[0]).sendMessage(ChatColor.GREEN+"Teleported to old world.");
+		    					plugin.sendModLoaderPacket((Player)args[0]);
+		    					return null;
+		    				}
+		        		},player.getName());
+		    	    	plugin.PrivatChestPlayerListener.addMoveTask(player.getName(),new CallableObjects(new Object[]{event.getPlayer(),plugin.confirmlistener},plugin){
+		    				long LastTime;
+		    	    		@Override
+		    				public Object call() throws Exception {
+		    	    			if(LastTime + 2000 > System.currentTimeMillis()) {
+		    	    				return false;
+		    	    			}
+		    	    			LastTime = System.currentTimeMillis();
+		    					if(((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName()))((Player)args[0]).sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
+		    					return !((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName());
+		    				}
+		    			});
+		        	} else {
+		        		plugin.PlayerModPacketListener.TeleportDestination.put(player.getName(), Oldloc);
+			    		
+		        	}
 	        	}
+	        	return;
         	}
-        	return;
     	}
 	}
    }

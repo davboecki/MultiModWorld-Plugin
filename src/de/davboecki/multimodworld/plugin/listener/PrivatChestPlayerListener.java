@@ -33,6 +33,7 @@ import de.davboecki.multimodworld.plugin.commandhandler.CallableObjects;
 import de.davboecki.multimodworld.plugin.reteleport.ReTeleportThread;
 import de.davboecki.multimodworld.plugin.reteleport.TeleportHandler;
 import de.davboecki.multimodworld.plugin.settings.Settings;
+import de.davboecki.multimodworld.server.ForgeLoginHooks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,17 +59,8 @@ public class PrivatChestPlayerListener extends PlayerListener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
-        if(plugin.ModPacketOK.contains(player.getName())){
-        	ArrayList<String> newModPackOK = new ArrayList<String>();
-        	Iterator ModPackOKIterator = plugin.ModPacketOK.iterator();
-        	while(ModPackOKIterator.hasNext()) {
-        		String PlayerName = (String)ModPackOKIterator.next();
-        		if(!PlayerName.equalsIgnoreCase(player.getName())){
-        			newModPackOK.add(PlayerName);
-        		}
-        	}
-        	plugin.ModPacketOK = newModPackOK;
-        }
+        ForgeLoginHooks.removePlayer(player);
+		ForgeLoginHooks.removeSended(player);
     }
     
     //Disabled Because of the new Packet Checking
@@ -106,40 +98,43 @@ public class PrivatChestPlayerListener extends PlayerListener {
         	plugin.RoomControl.LoadRoom(player);
         	playerLoc = plugin.RoomControl.playertospawn(player);
         }
-        boolean SendPacket = false;
+        
+        boolean SendPacket = ForgeLoginHooks.isPlayerSended(player);
         ArrayList<ItemStack> ModItems = new ArrayList<ItemStack>();
-        for(int i=0;i < player.getInventory().getSize();i++){
-        	ItemStack Item = player.getInventory().getItem(i);
-        	if(Item != null && ItemCheckHandler.isModItem(Item.getTypeId())){
-        		ModItems.add(Item);
-            	player.getInventory().clear(i);
-            	SendPacket = true;
-        	}
-        }
-        if(player.getInventory().getHelmet() != null && ItemCheckHandler.isModItem(player.getInventory().getHelmet().getTypeId())){
-    		plugin.PlayerModPacketListener.ModInventoryHelmet.put(player.getName(),player.getInventory().getHelmet());
-    		player.getInventory().setHelmet(null);
-    		SendPacket = true;
-        }
-        if(player.getInventory().getChestplate() != null && ItemCheckHandler.isModItem(player.getInventory().getChestplate().getTypeId())){
-        	plugin.PlayerModPacketListener.ModInventoryChestplate.put(player.getName(),player.getInventory().getChestplate());
-    		player.getInventory().setChestplate(null);
-    		SendPacket = true;
-        }
-        if(player.getInventory().getLeggings() != null && ItemCheckHandler.isModItem(player.getInventory().getLeggings().getTypeId())){
-        	plugin.PlayerModPacketListener.ModInventoryLeggings.put(player.getName(),player.getInventory().getLeggings());
-    		player.getInventory().setLeggings(null);
-    		SendPacket = true;
-        }
-        if(player.getInventory().getBoots() != null && ItemCheckHandler.isModItem(player.getInventory().getBoots().getTypeId())){
-        	plugin.PlayerModPacketListener.ModInventoryBoots.put(player.getName(),player.getInventory().getBoots());
-    		player.getInventory().setBoots(null);
-    		SendPacket = true;
+        if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
+	        for(int i=0;i < player.getInventory().getSize();i++){
+	        	ItemStack Item = player.getInventory().getItem(i);
+	        	if(Item != null && ItemCheckHandler.isModItem(Item.getTypeId())){
+	        		ModItems.add(Item);
+	            	player.getInventory().clear(i);
+	            	SendPacket = true;
+	        	}
+	        }
+	        if(player.getInventory().getHelmet() != null && ItemCheckHandler.isModItem(player.getInventory().getHelmet().getTypeId())){
+	    		plugin.PlayerModPacketListener.ModInventoryHelmet.put(player.getName(),player.getInventory().getHelmet());
+	    		player.getInventory().setHelmet(null);
+	    		SendPacket = true;
+	        }
+	        if(player.getInventory().getChestplate() != null && ItemCheckHandler.isModItem(player.getInventory().getChestplate().getTypeId())){
+	        	plugin.PlayerModPacketListener.ModInventoryChestplate.put(player.getName(),player.getInventory().getChestplate());
+	    		player.getInventory().setChestplate(null);
+	    		SendPacket = true;
+	        }
+	        if(player.getInventory().getLeggings() != null && ItemCheckHandler.isModItem(player.getInventory().getLeggings().getTypeId())){
+	        	plugin.PlayerModPacketListener.ModInventoryLeggings.put(player.getName(),player.getInventory().getLeggings());
+	    		player.getInventory().setLeggings(null);
+	    		SendPacket = true;
+	        }
+	        if(player.getInventory().getBoots() != null && ItemCheckHandler.isModItem(player.getInventory().getBoots().getTypeId())){
+	        	plugin.PlayerModPacketListener.ModInventoryBoots.put(player.getName(),player.getInventory().getBoots());
+	    		player.getInventory().setBoots(null);
+	    		SendPacket = true;
+	        }
         }
         
         plugin.teleporthandler.HandleJoin(event,SendPacket);
         
-        if(SendPacket) {
+        if(SendPacket && !ForgeLoginHooks.isPlayerSended(player)) {
         	plugin.PlayerModPacketListener.ModInventory.put(player.getName(), ModItems);
 			if(PrivatChest.debug())plugin.log.info("Packet 230: "+event.getPlayer().getName()+": ModInventory");
 			plugin.sendModLoaderPacket(player);
@@ -290,10 +285,10 @@ public class PrivatChestPlayerListener extends PlayerListener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerInteract(PlayerInteractEvent event){
-    	if(event.getPlayer().getWorld().getGenerator() != plugin.Worldgen) return;
-    	if(!plugin.PlayerPositionCheck.PlayerinRoom(event.getPlayer())) return;
-    	if(plugin.ModPacketOK.contains(event.getPlayer().getName())) return;
     	if(event.getClickedBlock() == null) return;
+    	if(event.getPlayer().getWorld().getGenerator() != plugin.Worldgen) return;
+    	if(ForgeLoginHooks.isPlayerConfirmed(event.getPlayer())) return;
+    	if(!plugin.PlayerPositionCheck.PlayerinRoom(event.getPlayer())) return;
     	if(event.getClickedBlock().getTypeId() == Block.CHEST.id) {
     		boolean ModItems = false;
     		Chest chest = (Chest)event.getClickedBlock().getState();
