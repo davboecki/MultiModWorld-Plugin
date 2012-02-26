@@ -11,6 +11,7 @@ public class WorldSetting {
 		AllEntitiesAllowed = false;
 		CheckTeleport = false;
 		UseVanillaRecipes = false;
+		PopulateChunk = false;
 	}
 	
 	public String ItemList;
@@ -19,5 +20,6 @@ public class WorldSetting {
 	public Boolean AllEntitiesAllowed;
 	public Boolean CheckTeleport;
 	public Boolean UseVanillaRecipes;
+	public Boolean PopulateChunk;
 	public HashMap<String,Boolean> Tags;
 }

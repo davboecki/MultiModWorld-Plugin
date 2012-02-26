@@ -64,6 +64,8 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 	public boolean hasWorldSetting(String WorldName, String Setting) {
 		if(Setting.equals("UseVanillaRecipes")) {
 			return Settings.getWorldSetting(WorldName).UseVanillaRecipes;
+		} else if(Setting.equals("PopulateChunk")) {
+			return Settings.getWorldSetting(WorldName).PopulateChunk;
 		} else {
 			return plugin.Settings.getTag(WorldName,Setting);
 		}

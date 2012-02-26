@@ -61,6 +61,9 @@ public class PrivatChestPlayerListener extends PlayerListener {
         Player player = event.getPlayer();
         ForgeLoginHooks.removePlayer(player);
 		ForgeLoginHooks.removeSended(player);
+		if(plugin.confirmlistener.ExistTaskFor(player.getName())) {
+			plugin.confirmlistener.removeTask(player.getName());
+		}
     }
     
     //Disabled Because of the new Packet Checking
@@ -133,9 +136,9 @@ public class PrivatChestPlayerListener extends PlayerListener {
         }
         
         plugin.teleporthandler.HandleJoin(event,SendPacket);
-        
+
+    	plugin.PlayerModPacketListener.ModInventory.put(player.getName(), ModItems);
         if(SendPacket && !ForgeLoginHooks.isPlayerSended(player)) {
-        	plugin.PlayerModPacketListener.ModInventory.put(player.getName(), ModItems);
 			if(PrivatChest.debug())plugin.log.info("Packet 230: "+event.getPlayer().getName()+": ModInventory");
 			plugin.sendModLoaderPacket(player);
         }

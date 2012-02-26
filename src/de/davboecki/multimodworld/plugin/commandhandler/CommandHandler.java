@@ -64,6 +64,21 @@ public class CommandHandler {
     		} else if(IsCommand(args,0,"help")) {
     			displayhelp(sender);
     			return true;
+    		} else if(IsCommand(args,0,"predefine")) {
+    			String WorldName = args[1];
+    			if(!plugin.Settings.WorldSettings.containsKey(WorldName)){
+    				WorldSetting WorldSetting = new WorldSetting();
+    				for(Object Tag: plugin.Settings.WorldTagList.toArray()){
+    					if(!(Tag instanceof String)) continue;
+    					WorldSetting.Tags.put((String)Tag, false);
+    				}
+    				plugin.Settings.WorldSettings.put(WorldName,WorldSetting);
+    				plugin.save();
+    				sender.sendMessage((sender instanceof Player?ChatColor.GREEN:Color.GREEN) + "Setting entry created.");
+    			} else {
+    				sender.sendMessage((sender instanceof Player?ChatColor.RED:Color.RED) + "Entry already exsit.");
+    			}
+    			return true;
     		} else if(IsCommand(args,0,"?")) {
     			return HandleHelpCommand(sender, args,name);
     		} else {
@@ -96,7 +111,9 @@ public class CommandHandler {
 			display.append(mmw+" worldsetting/ws <world> allowall");
 			display.append("          <entity/item> <true/false>",true);
 			display.append(info+" Set flag allowall <entity/item> for world <world> to",true);
-			display.append("<true/false>",true);
+			display.append("          <true/false>",true);
+			display.append(mmw+" worldsetting/ws <world> PopulateChunk");
+			display.append(info+"  En/Disable Chunk population.",true);
 			display.display(sender);
 			return true;
 		} else if(IsCommand(args,1,new String[]{"exchangeworld","ew","exchangeworld/ew"})) {
@@ -152,7 +169,7 @@ public class CommandHandler {
 			String mmw = ChatColor.AQUA+"/multimodworld"+ChatColor.WHITE;
 			String info = ChatColor.RED+"Info"+ChatColor.WHITE+":";
 			display.append(mmw+" reload");
-			display.append(info+" Reload all settings from files.");
+			display.append(info+" Reload all settings from files.",true);
 			display.display(sender);
 			return true;
 		} else if(IsCommand(args,1,"save")){
@@ -162,7 +179,7 @@ public class CommandHandler {
 			String mmw = ChatColor.AQUA+"/multimodworld"+ChatColor.WHITE;
 			String info = ChatColor.RED+"Info"+ChatColor.WHITE+":";
 			display.append(mmw+" save");
-			display.append(info+" Save all settings to files.");
+			display.append(info+" Save all settings to files.",true);
 			display.display(sender);
 			return true;
 		} else if(IsCommand(args,1,"yes")){
@@ -172,7 +189,7 @@ public class CommandHandler {
 			String mmw = ChatColor.AQUA+"/multimodworld"+ChatColor.WHITE;
 			String info = ChatColor.RED+"Info"+ChatColor.WHITE+":";
 			display.append(mmw+" yes");
-			display.append(info+" Confirm a question.");
+			display.append(info+" Confirm a question.",true);
 			display.display(sender);
 			return true;
 		} else if(IsCommand(args,1,"no")){
@@ -182,7 +199,17 @@ public class CommandHandler {
 			String mmw = ChatColor.AQUA+"/multimodworld"+ChatColor.WHITE;
 			String info = ChatColor.RED+"Info"+ChatColor.WHITE+":";
 			display.append(mmw+" no");
-			display.append(info+" Deny a question.");
+			display.append(info+" Deny a question.",true);
+			display.display(sender);
+			return true;
+		} else if(IsCommand(args,1,"predefine")){
+			MorePageDisplay display = new MorePageDisplay(new String[]{
+				"< Help No %/$ >"
+			},name);
+			String mmw = ChatColor.AQUA+"/multimodworld"+ChatColor.WHITE;
+			String info = ChatColor.RED+"Info"+ChatColor.WHITE+":";
+			display.append(mmw+" predefine <world>");
+			display.append(info+" Create settings entry for non-existent world.",true);
 			display.display(sender);
 			return true;
 		} else {
@@ -691,19 +718,23 @@ public class CommandHandler {
     	if(args.length == 3){return false;}
     	if(args.length > 5){return false;}
     	World world = getWorld(args[1]);
-		if(world == null) {
+    	if(world != null) {
+    		args[1] = world.getName();
+    	}
+		if(!plugin.Settings.WorldSettings.containsKey(args[1])) {
 			if(sender instanceof Player) {
-				sender.sendMessage(ChatColor.RED + "Error:" + ChatColor.WHITE + " World " + args[1] + " could not be found.");
+				sender.sendMessage(ChatColor.RED + "Error:" + ChatColor.WHITE + " World " + args[1] + " could not be found in settings.");
 			} else {
-				sender.sendMessage(Color.RED + "Error:" + Color.WHITE + " World "  +args[1] + " could not be found.");
+				sender.sendMessage(Color.RED + "Error:" + Color.WHITE + " World "  +args[1] + " could not be found in settings.");
 			}
 			return false;
 		}
-		args[1] = world.getName();
 		if(args.length == 2){
-    		return DisplayWorldSettings(sender,world);
-    	} else if(args.length == 4){
+    		return DisplayWorldSettings(sender,args[1]);
+    	} else if(args.length == 4 && !IsCommand(args, 2, "PopulateChunk")) {
     		return HandleTagWorldCommand(sender,args);
+    	} else if(args.length == 4 && IsCommand(args, 2, "PopulateChunk")) {
+    		return HandlePopulateChunkCommand(sender,args);
     	} else if(args.length == 5){
     		return HandleAllowingCommand(sender,args);
     	} else {
@@ -711,11 +742,17 @@ public class CommandHandler {
     	}
     }
     
-    private boolean DisplayWorldSettings(CommandSender sender, World world){
-    	if(!plugin.Settings.WorldSettings.containsKey(world.getName())) return false;
-    	WorldSetting setting = plugin.Settings.WorldSettings.get(world.getName());
+    private boolean HandlePopulateChunkCommand(CommandSender sender, String[] args) {
+		if(!IsBoolean(args[3])) return false;
+		plugin.Settings.WorldSettings.get(args[1]).PopulateChunk = IsBooleanTrue(args[3]);
+		return true;
+	}
+
+	private boolean DisplayWorldSettings(CommandSender sender, String worldname){
+    	if(!plugin.Settings.WorldSettings.containsKey(worldname)) return false;
+    	WorldSetting setting = plugin.Settings.WorldSettings.get(worldname);
 		if(sender instanceof Player){
-			sender.sendMessage(ChatColor.BLUE+"World: "+world.getName());
+			sender.sendMessage(ChatColor.BLUE+"World: "+worldname);
 			sender.sendMessage("Teleporting into this world is " + (setting.CheckTeleport?"":(ChatColor.RED+"not "+ChatColor.WHITE)) + "checked.");
 			sender.sendMessage((setting.AllIdsAllowed?"A":ChatColor.RED+"Not"+ChatColor.WHITE+" a")+"ll ids are allowed in this world");
 			sender.sendMessage((setting.AllEntitiesAllowed?"A":ChatColor.RED+"Not"+ChatColor.WHITE+" a")+"ll entities are allowed in this world");
@@ -726,7 +763,7 @@ public class CommandHandler {
 				sender.sendMessage((setting.Tags.get(key)?ChatColor.GREEN:ChatColor.RED)+"  "+key+": "+(setting.Tags.get(key)?"true":"false"));
 			}
 		} else {
-			sender.sendMessage(Color.BLUE+"World: "+world.getName());
+			sender.sendMessage(Color.BLUE+"World: "+worldname);
 			sender.sendMessage("Teleporting into this world is " + (setting.CheckTeleport?"":(Color.RED+"not "+Color.WHITE)) + "checked.");
 			sender.sendMessage((setting.AllIdsAllowed?"A":Color.RED+"Not"+Color.WHITE+" a")+"ll ids are allowed in this world");
 			sender.sendMessage((setting.AllEntitiesAllowed?"A":Color.RED+"Not"+Color.WHITE+" a")+"ll entities are allowed in this world");
@@ -796,7 +833,15 @@ public class CommandHandler {
 	public void displayhelp(CommandSender sender) {
 		displayhelp(sender,false);
 	}
-		
+	
+	public boolean IsBoolean(String arg) {
+		return arg.equalsIgnoreCase("true") || arg.equalsIgnoreCase("false") || arg.equalsIgnoreCase("on") || arg.equalsIgnoreCase("off") || arg.equalsIgnoreCase("0") || arg.equalsIgnoreCase("1") || arg.equalsIgnoreCase("yes") || arg.equalsIgnoreCase("no");
+	}
+	
+	public boolean IsBooleanTrue(String arg) {
+		return arg.equalsIgnoreCase("true") || arg.equalsIgnoreCase("on") || arg.equalsIgnoreCase("0") || arg.equalsIgnoreCase("yes");
+	}
+	
 	public void displayhelp(CommandSender sender,boolean cnf) {
     	String name = sender instanceof Player ? ((CraftPlayer)sender).getName() : "[Console]";
 		String[] header;
@@ -812,6 +857,7 @@ public class CommandHandler {
 		}
 		MorePageDisplay display = new MorePageDisplay(header,name);
 		String mmw = ChatColor.AQUA+"/multimodworld"+ChatColor.WHITE;
+		display.append(mmw+" predefine <world>");
 		display.append(mmw+" worldsetting/ws <world>");
 		display.append(mmw+" worldsetting/ws <world> <tag>");
 		display.append("          <true/false>",true);
@@ -819,6 +865,8 @@ public class CommandHandler {
 		display.append("          <entity/item> <name>",true);
 		display.append(mmw+" worldsetting/ws <world> allowall");
 		display.append("          <entity/item> <true/false>",true);
+		display.append(mmw+" worldsetting/ws <world> PopulateChunk");
+		display.append("          <true/false>",true);
 		display.append(mmw+" exchangeworld/ew <world>");
 		display.append(mmw+" exchangeworld/ew <world>");
 		display.append("          <Mod/Creative>",true);

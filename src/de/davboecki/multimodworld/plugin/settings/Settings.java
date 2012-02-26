@@ -332,7 +332,16 @@ public class Settings {
         	String Name = child.substring(0, child.indexOf("."));
         	try {
             	pFile = new FileInputStream(file);
-            	WorldSettings.put(Name,(WorldSetting)yamlWorldSettings.load(new UnicodeReader(pFile)));
+            	WorldSetting tmp = (WorldSetting)yamlWorldSettings.load(new UnicodeReader(pFile));
+            	if(tmp.Tags.containsKey("PopulateChunk")) {
+            		tmp.PopulateChunk = tmp.Tags.get("PopulateChunk");
+            		if(WorldTagList.contains("PopulateChunk")) {
+            			WorldTagList.remove("PopulateChunk");
+            			saveWorldTagList();
+            		}
+            		saveWorldSettings();
+            	}
+            	WorldSettings.put(Name,tmp);
             	getItemList(Name);
             	getEntityList(Name);
         	} catch (FileNotFoundException e) {

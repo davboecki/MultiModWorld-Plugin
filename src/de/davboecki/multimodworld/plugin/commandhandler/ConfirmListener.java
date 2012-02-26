@@ -28,8 +28,9 @@ public class ConfirmListener extends PlayerListener {
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event){
 		if(event.isCancelled()) return;
 		if(Task.containsKey(event.getPlayer().getName())){
-			event.getPlayer().sendMessage("Please answer question first!");
-			event.setCancelled(true);
+			event.getPlayer().sendMessage("Don't forget to answer the question!");
+			//event.getPlayer().sendMessage("Please answer question first!");
+			//event.setCancelled(true);
 		}
 		if(MorePageDisplay.containsKey(event.getPlayer().getName())){
 			if(!MorePageDisplay.get(event.getPlayer().getName()).isTerminated()){
@@ -95,9 +96,13 @@ public class ConfirmListener extends PlayerListener {
 		Task.remove(name);
 		return true;
 	}
-	
+
 	public boolean ExistTaskFor(String name){
 		return Task.containsKey(name);
+	}
+
+	public void removeTask(String name){
+		Task.remove(name);
 	}
 	
 	@SuppressWarnings("rawtypes")

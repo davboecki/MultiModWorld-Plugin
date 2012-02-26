@@ -50,18 +50,35 @@ public class PlayerModPacketListener implements Listener{
 	@EventHandler
 	public void onModsOKHandle(ModsOKHandleEvent event){
 		Player player = event.getPlayer();
+		
+		//xAuth
+		boolean isxAuthGuest = false;
+		Object xPlayer = null;
+		if(plugin.isxAuth()) {
+			xPlayer = ((com.cypherx.xauth.xAuth)plugin.getxAuth()).getPlayer(player.getName());
+			isxAuthGuest = ((com.cypherx.xauth.xAuthPlayer)xPlayer).isGuest();
+			if(isxAuthGuest) {
+				((com.cypherx.xauth.xAuth)plugin.getxAuth()).removeGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
+			}
+		}
+		
+		if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
+			ForgeLoginHooks.confirmPlayer(player);
+		}
+		
 		if(IDBoolean.containsKey(player.getName())){
 			if(!IDBoolean.get(player.getName())){
 				player.sendMessage("§bIds worng Linkes.");
 				for(Object MessageObject:IDMessage.get(player.getName()).split("\n")){
 					player.sendMessage((String)MessageObject);
 				}
+				if(isxAuthGuest) {
+					((com.cypherx.xauth.xAuth)plugin.getxAuth()).createGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
+				}
 				return;
 			}
 		}
-		if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
-			ForgeLoginHooks.confirmPlayer(player);
-		}
+		
 		ForgeLoginHooks.removeSended(player);
 		if(ModInventory.containsKey(player.getName())){
 			for(ItemStack Item:ModInventory.get(player.getName())){
@@ -90,10 +107,11 @@ public class PlayerModPacketListener implements Listener{
 			if(player.getWorld().getGenerator() != plugin.Worldgen) return;
 			if (Math.floor(playerLoc.getX()) != ((plugin.RoomControl.getRoomlocation(player).getX() * 7) + 5) || Math.floor(playerLoc.getY()) != 2 || Math.floor(playerLoc.getZ()) != ((plugin.RoomControl.getRoomlocation(player).getZ() * 7) + 3)) return;
 			
-		       Location TeleportLoc = new Location(player.getWorld(), 26.5, 8,
-		               6.5, 90, 0);
-					    plugin.teleporthandler.teleport(player,TeleportLoc);
-		    ReTeleportThread.add(20,player,TeleportLoc);
+			Location TeleportLoc = new Location(player.getWorld(), 26.5, 8, 6.5, 90, 0);
+			plugin.teleporthandler.teleport(player,TeleportLoc);
+			if(!isxAuthGuest) {
+				ReTeleportThread.add(20,player,TeleportLoc);
+			}
 		    player.sendMessage("§2Teleportiert");
 		    player.sendMessage("You are now in the §1Mod Stargate§f Room");
 		    TeleportPlayer.remove(player);
@@ -112,7 +130,9 @@ public class PlayerModPacketListener implements Listener{
 			}
 			if(PrivatChest.debug()) player.sendMessage("ModLoaderMP OK, Teleporting to:"+loc.toString());
 			plugin.teleporthandler.teleport(player,loc);
-		    ReTeleportThread.add(20,player,loc);
+			if(!isxAuthGuest) {
+				ReTeleportThread.add(20,player,loc);
+			}
 			TeleportDestination.remove(player.getName());
 		} else if(CallableAction.containsKey(player.getName())){
 			try{
@@ -122,5 +142,10 @@ public class PlayerModPacketListener implements Listener{
 				e.printStackTrace();
 			}
 		}
+		
+		if(isxAuthGuest) {
+			((com.cypherx.xauth.xAuth)plugin.getxAuth()).createGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
+		}
+		
 	}
 }
