@@ -55,10 +55,14 @@ public class PlayerModPacketListener implements Listener{
 		boolean isxAuthGuest = false;
 		Object xPlayer = null;
 		if(plugin.isxAuth()) {
-			xPlayer = ((com.cypherx.xauth.xAuth)plugin.getxAuth()).getPlayer(player.getName());
+			try {
+				xPlayer = ((com.cypherx.xauth.xAuth)plugin.getxAuth()).getPlayer(player.getName());
+			} catch(Exception e) {}
 			isxAuthGuest = ((com.cypherx.xauth.xAuthPlayer)xPlayer).isGuest();
 			if(isxAuthGuest) {
-				((com.cypherx.xauth.xAuth)plugin.getxAuth()).removeGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
+				try {
+					((com.cypherx.xauth.xAuth)plugin.getxAuth()).removeGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
+				} catch(Exception e) {}
 			}
 		}
 		
@@ -73,7 +77,9 @@ public class PlayerModPacketListener implements Listener{
 					player.sendMessage((String)MessageObject);
 				}
 				if(isxAuthGuest) {
-					((com.cypherx.xauth.xAuth)plugin.getxAuth()).createGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
+					try {	
+						((com.cypherx.xauth.xAuth)plugin.getxAuth()).createGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
+					} catch(Exception e) {}
 				}
 				return;
 			}
@@ -144,7 +150,9 @@ public class PlayerModPacketListener implements Listener{
 		}
 		
 		if(isxAuthGuest) {
-			((com.cypherx.xauth.xAuth)plugin.getxAuth()).createGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
+			try {
+				((com.cypherx.xauth.xAuth)plugin.getxAuth()).createGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
+			} catch(Exception e) {}
 		}
 		
 	}
