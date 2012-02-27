@@ -11,9 +11,8 @@ import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.Packet5EntityEquipment;
 import de.davboecki.multimodworld.plugin.PrivatChest;
 import de.davboecki.multimodworld.server.ForgeLoginHooks;
-import de.davboecki.multimodworld.server.packethandleevent.PacketSendEvent;
 
-public class PacketListener implements Listener {
+public class PacketListener{
 	
 	PrivatChest plugin;
 	public boolean AllowModLoaderPacket = false;
@@ -22,21 +21,20 @@ public class PacketListener implements Listener {
 		plugin = instance;
 	}
 	
-	@EventHandler
-	public void onPacketSendEvent(PacketSendEvent event) {
-		if(plugin.MultiModWorld == null) return;
+	
+	public boolean PacketSend(Packet packet, Player player) {
+		if(plugin.MultiModWorld == null) return true;
 		try {
-			Packet packet = event.packet;
-			if(packet == null) return;
-			if(event.getPlayer() == null) return;
+			if(packet == null) return true;
+			if(player == null) return true;
 			if(packet instanceof Packet230ModLoader){
-				if(!ForgeLoginHooks.isPlayerConfirmed(event.getPlayer()) && !AllowModLoaderPacket && !ForgeLoginHooks.isPlayerSended(event.getPlayer())){
-					event.setCancelled(true);
+				if(!ForgeLoginHooks.isPlayerConfirmed(player) && !AllowModLoaderPacket && !ForgeLoginHooks.isPlayerSended(player)){
+					return false;
 				}
 			} else if(packet instanceof Packet5EntityEquipment){
 				Packet5EntityEquipment Equipment = (Packet5EntityEquipment)packet;
-				if(!ForgeLoginHooks.isPlayerConfirmed(event.getPlayer())) {
-					if(plugin.MultiModWorld.isIdAllowed(event.getPlayer().getWorld().getName(), Equipment.c)) {
+				if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
+					if(plugin.MultiModWorld.isIdAllowed(player.getWorld().getName(), Equipment.c)) {
 						Equipment.c = -1;
 						Equipment.d = 0;
 						//Player handplayer = getPlayerByEntityId(Equipment.a);
@@ -44,13 +42,14 @@ public class PacketListener implements Listener {
 					}
 				}
 			} else if(!packet.getClass().getPackage().getName().equalsIgnoreCase("net.minecraft.server")) {
-				if(!ForgeLoginHooks.isPlayerConfirmed(event.getPlayer())){
-					event.setCancelled(true);
+				if(!ForgeLoginHooks.isPlayerConfirmed(player)){
+					return false;
 				}
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		return true;
 	}
 
 	private Player getPlayerByEntityId(int a) {

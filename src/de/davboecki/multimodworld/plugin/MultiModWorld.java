@@ -1,6 +1,9 @@
 package de.davboecki.multimodworld.plugin;
 
+import org.bukkit.entity.Player;
+
 import net.minecraft.server.Entity;
+import net.minecraft.server.Packet;
 import de.davboecki.multimodworld.plugin.settings.Settings;
 import de.davboecki.multimodworld.server.plugin.IModWorldHandlePlugin;
 
@@ -74,5 +77,10 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 	@Override
 	public boolean isCraftingAllowed(String WorldName, int id) {
 		return this.isIdAllowed(WorldName, id);
+	}
+
+	@Override
+	public boolean PacketSend(Packet packet, Player player) {
+		return plugin.PacketListener.PacketSend(packet, player);
 	}
 }

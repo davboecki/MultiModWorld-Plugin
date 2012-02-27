@@ -57,8 +57,8 @@ public class PlayerModPacketListener implements Listener{
 		if(plugin.isxAuth()) {
 			try {
 				xPlayer = ((com.cypherx.xauth.xAuth)plugin.getxAuth()).getPlayer(player.getName());
+				isxAuthGuest = ((com.cypherx.xauth.xAuthPlayer)xPlayer).isGuest();
 			} catch(Exception e) {}
-			isxAuthGuest = ((com.cypherx.xauth.xAuthPlayer)xPlayer).isGuest();
 			if(isxAuthGuest) {
 				try {
 					((com.cypherx.xauth.xAuth)plugin.getxAuth()).removeGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);

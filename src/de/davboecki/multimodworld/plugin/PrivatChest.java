@@ -123,7 +123,6 @@ public class PrivatChest extends JavaPlugin {
         pm.registerEvents(FurnaceListener, this);
         pm.registerEvents(PlayerPreCommandListener, this);
         pm.registerEvents(confirmlistener, this);
-        pm.registerEvents(PacketListener, this);
         Settings.load();
 
         this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new ReTeleportThread(this), 1, 1);
