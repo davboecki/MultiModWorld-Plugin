@@ -83,4 +83,18 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 	public boolean PacketSend(Packet packet, Player player) {
 		return plugin.PacketListener.PacketSend(packet, player);
 	}
+
+	@Override
+	public Entity ReplaceEntity(String WorldName, Entity entity) {
+		if(true) {
+			try {
+				if(Class.forName("railcraft.common.carts.EntityCartChest").isInstance(entity)) {
+					entity = new net.minecraft.server.EntityMinecart(entity.world, entity.locX, entity.locY, entity.locZ, 1);
+				} else if(Class.forName("railcraft.common.carts.EntityCartSteam").isInstance(entity)) {
+					entity = new net.minecraft.server.EntityMinecart(entity.world, entity.locX, entity.locY, entity.locZ, 2);
+				}
+			} catch (Exception e) {}
+		}
+		return entity;
+	}
 }
