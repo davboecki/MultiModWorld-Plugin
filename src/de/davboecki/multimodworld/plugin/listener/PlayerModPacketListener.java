@@ -24,11 +24,6 @@ public class PlayerModPacketListener implements Listener{
 	public ArrayList<String> TeleportPlayer = new ArrayList<String>();
 	public HashMap<String,Location> TeleportDestination = new HashMap<String,Location>();
 	public HashMap<String,Callable> CallableAction = new HashMap<String,Callable>();
-	public HashMap<String,ArrayList<ItemStack>> ModInventory = new HashMap<String,ArrayList<ItemStack>>();
-	public HashMap<String,ItemStack> ModInventoryHelmet = new HashMap<String,ItemStack>();
-	public HashMap<String,ItemStack> ModInventoryChestplate = new HashMap<String,ItemStack>();
-	public HashMap<String,ItemStack> ModInventoryLeggings = new HashMap<String,ItemStack>();
-	public HashMap<String,ItemStack> ModInventoryBoots = new HashMap<String,ItemStack>();
 	public static HashMap<String,String> IDMessage = new HashMap<String,String>();
 	public static HashMap<String,Boolean> IDBoolean = new HashMap<String,Boolean>();
 	
@@ -86,28 +81,9 @@ public class PlayerModPacketListener implements Listener{
 		}
 		
 		ForgeLoginHooks.removeSended(player);
-		if(ModInventory.containsKey(player.getName())){
-			for(ItemStack Item:ModInventory.get(player.getName())){
-				player.getInventory().addItem(Item);
-			}
-			ModInventory.remove(player.getName());
-		}
-		if(ModInventoryHelmet.containsKey(player.getName())){
-			player.getInventory().setHelmet(ModInventoryHelmet.get(player.getName()));
-			ModInventoryHelmet.remove(player.getName());
-		}
-		if(ModInventoryChestplate.containsKey(player.getName())){
-			player.getInventory().setChestplate(ModInventoryChestplate.get(player.getName()));
-			ModInventoryChestplate.remove(player.getName());
-		}
-		if(ModInventoryLeggings.containsKey(player.getName())){
-			player.getInventory().setLeggings(ModInventoryLeggings.get(player.getName()));
-			ModInventoryLeggings.remove(player.getName());
-		}
-		if(ModInventoryBoots.containsKey(player.getName())){
-			player.getInventory().setBoots(ModInventoryBoots.get(player.getName()));
-			ModInventoryBoots.remove(player.getName());
-		}
+		
+		plugin.ModItemSaver.returnModItems(player);
+		
 		if(TeleportPlayer.contains(player.getName())){
 			Location playerLoc = player.getLocation();
 			if(player.getWorld().getGenerator() != plugin.Worldgen) return;

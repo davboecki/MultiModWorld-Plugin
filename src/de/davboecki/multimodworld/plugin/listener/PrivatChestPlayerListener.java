@@ -103,42 +103,15 @@ public class PrivatChestPlayerListener extends PlayerListener {
         }
         
         boolean SendPacket = ForgeLoginHooks.isPlayerSended(player);
-        ArrayList<ItemStack> ModItems = new ArrayList<ItemStack>();
         if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
-	        for(int i=0;i < player.getInventory().getSize();i++){
-	        	ItemStack Item = player.getInventory().getItem(i);
-	        	if(Item != null && ItemCheckHandler.isModItem(Item.getTypeId())){
-	        		ModItems.add(Item);
-	            	player.getInventory().clear(i);
-	            	SendPacket = true;
-	        	}
-	        }
-	        if(player.getInventory().getHelmet() != null && ItemCheckHandler.isModItem(player.getInventory().getHelmet().getTypeId())){
-	    		plugin.PlayerModPacketListener.ModInventoryHelmet.put(player.getName(),player.getInventory().getHelmet());
-	    		player.getInventory().setHelmet(null);
-	    		SendPacket = true;
-	        }
-	        if(player.getInventory().getChestplate() != null && ItemCheckHandler.isModItem(player.getInventory().getChestplate().getTypeId())){
-	        	plugin.PlayerModPacketListener.ModInventoryChestplate.put(player.getName(),player.getInventory().getChestplate());
-	    		player.getInventory().setChestplate(null);
-	    		SendPacket = true;
-	        }
-	        if(player.getInventory().getLeggings() != null && ItemCheckHandler.isModItem(player.getInventory().getLeggings().getTypeId())){
-	        	plugin.PlayerModPacketListener.ModInventoryLeggings.put(player.getName(),player.getInventory().getLeggings());
-	    		player.getInventory().setLeggings(null);
-	    		SendPacket = true;
-	        }
-	        if(player.getInventory().getBoots() != null && ItemCheckHandler.isModItem(player.getInventory().getBoots().getTypeId())){
-	        	plugin.PlayerModPacketListener.ModInventoryBoots.put(player.getName(),player.getInventory().getBoots());
-	    		player.getInventory().setBoots(null);
-	    		SendPacket = true;
-	        }
+        	if(plugin.ModItemSaver.exportModItems(player)){
+        		SendPacket = true;
+        	}
         }
         
         plugin.teleporthandler.HandleJoin(event,SendPacket);
 
-    	plugin.PlayerModPacketListener.ModInventory.put(player.getName(), ModItems);
-        if(SendPacket && !ForgeLoginHooks.isPlayerSended(player)) {
+    	if(SendPacket && !ForgeLoginHooks.isPlayerSended(player)) {
 			if(PrivatChest.debug())plugin.log.info("Packet 230: "+event.getPlayer().getName()+": ModInventory");
 			plugin.sendModLoaderPacket(player);
         }

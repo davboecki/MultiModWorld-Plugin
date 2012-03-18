@@ -48,6 +48,7 @@ import de.davboecki.multimodworld.server.plugin.IModWorldHandlePlugin;
 import de.davboecki.multimodworld.plugin.settings.ExchangeWorldSetting;
 import de.davboecki.multimodworld.plugin.settings.Settings;
 import de.davboecki.multimodworld.plugin.settings.WorldSetting;
+import de.davboecki.multimodworld.plugin.inventory.ModItemSaver;
 
 
 public class PrivatChest extends JavaPlugin {
@@ -72,6 +73,7 @@ public class PrivatChest extends JavaPlugin {
     public MultiModWorld MultiModWorld = null;
     public TeleportHandler teleporthandler = new TeleportHandler(this);
     public PacketListener PacketListener = new PacketListener(this);
+    public ModItemSaver ModItemSaver = new ModItemSaver(this);
     
     //Plugins
     private Object xAuth = null;
@@ -135,6 +137,8 @@ public class PrivatChest extends JavaPlugin {
         }
         
         commandhandler = new CommandHandler(this);
+
+        ModItemSaver.load();
         
         log.info("[PrivatChest] Plugin v"+this.getDescription().getVersion()+" has been enabled!");
         if(MultiModWorld != null) {
@@ -159,6 +163,7 @@ public class PrivatChest extends JavaPlugin {
     
     public void onDisable() {
     	Settings.save();
+        ModItemSaver.save();
         log.info("[PrivatChest] Plugin v"+this.getDescription().getVersion()+" has been disabled.");
     }
     
