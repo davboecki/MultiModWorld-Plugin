@@ -7,13 +7,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerListener;
 
 import de.davboecki.multimodworld.plugin.PrivatChest;
 
-public class ConfirmListener extends PlayerListener {
+public class ConfirmListener implements Listener {
 	
 	private PrivatChest plugin;
 	@SuppressWarnings("rawtypes")

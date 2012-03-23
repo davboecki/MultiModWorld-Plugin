@@ -6,10 +6,10 @@ import org.bukkit.World;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityListener;
 
-public class CreatueSpawnListener extends EntityListener{
+public class CreatueSpawnListener implements Listener {
 	public PrivatChest plugin;
 	
 	CreatueSpawnListener(PrivatChest pplugin){

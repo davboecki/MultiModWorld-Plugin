@@ -9,15 +9,15 @@ import org.bukkit.entity.Player;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import de.davboecki.multimodworld.plugin.PrivatChest;
 import de.davboecki.multimodworld.plugin.RoomGenerator;
 
 
-public class PrivatChestBlockListener extends BlockListener {
+public class PrivatChestBlockListener implements Listener {
     public static PrivatChest plugin;
 
     public PrivatChestBlockListener(PrivatChest pplugin) {

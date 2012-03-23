@@ -2,15 +2,15 @@ package de.davboecki.multimodworld.plugin.listener;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
-import org.bukkit.event.inventory.InventoryListener;
 import org.bukkit.inventory.ItemStack;
 
 import de.davboecki.multimodworld.plugin.ItemCheckHandler;
 import de.davboecki.multimodworld.plugin.PrivatChest;
 
-public class FurnaceListener extends InventoryListener {
+public class FurnaceListener implements Listener {
 	PrivatChest plugin;
 	
 	public FurnaceListener(PrivatChest plugin){

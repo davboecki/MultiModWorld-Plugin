@@ -19,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.CraftChunk;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -201,7 +202,7 @@ public class TeleportHandler {
 	    	    	((CraftPlayer)player).getHandle().locX = loc.getX();
 	    	    	((CraftPlayer)player).getHandle().locY = loc.getY();
 	    	    	((CraftPlayer)player).getHandle().locZ = loc.getZ();
-	    	    	((CraftPlayer)player).getHandle().netServerHandler.sendPacket(new Packet51MapChunk((((int)loc.getX())>>4)<<4, 0, (((int)loc.getZ())>>4)<<4, 16,  ((CraftWorld)loc.getWorld()).getHandle().height, 16, ((CraftWorld)loc.getWorld()).getHandle()));
+	    	    	((CraftPlayer)player).getHandle().netServerHandler.sendPacket(new Packet51MapChunk(((CraftChunk)world.getChunkAt(player.getLocation())).getHandle(),true,0));
 	    	    	//teleport(player,loc);
 	    	    	//ReTeleportThread.add(10,player,loc);
 		        	if(!SendPacket) {

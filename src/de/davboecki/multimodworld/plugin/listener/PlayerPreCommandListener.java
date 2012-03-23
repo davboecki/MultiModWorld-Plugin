@@ -3,13 +3,13 @@ package de.davboecki.multimodworld.plugin.listener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerListener;
 
 import de.davboecki.multimodworld.plugin.ItemCheckHandler;
 import de.davboecki.multimodworld.plugin.PrivatChest;
 
-public class PlayerPreCommandListener extends PlayerListener {
+public class PlayerPreCommandListener implements Listener {
 	
 	private PrivatChest plugin;
 	public PlayerPreCommandListener(PrivatChest instance){

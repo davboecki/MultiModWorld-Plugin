@@ -173,7 +173,7 @@ public class PrivatChest extends JavaPlugin {
     public void sendModLoaderPacket(Player player){
     	PacketListener.AllowModLoaderPacket = true;
     	if(MultiModWorld != null) {
-    		ModLoaderMp.HandleAllLogins(((CraftPlayer)player).getHandle());
+    		ModLoaderMp.handleAllLogins(((CraftPlayer)player).getHandle());
     	}
     	PacketListener.AllowModLoaderPacket = false;
     }

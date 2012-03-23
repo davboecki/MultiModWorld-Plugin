@@ -2,13 +2,13 @@ package de.davboecki.multimodworld.plugin;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.world.WorldListener;
+import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 
 import de.davboecki.multimodworld.plugin.settings.WorldSetting;
 
 
-public class WorldLoadListener extends WorldListener{
+public class WorldLoadListener implements Listener {
 	PrivatChest plugin;
 	
 	WorldLoadListener(PrivatChest instance){
