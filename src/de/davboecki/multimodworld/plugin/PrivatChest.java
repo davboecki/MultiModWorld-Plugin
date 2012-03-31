@@ -42,14 +42,14 @@ import de.davboecki.multimodworld.plugin.listener.*;
 import de.davboecki.multimodworld.plugin.reteleport.ReTeleportThread;
 import de.davboecki.multimodworld.plugin.reteleport.TeleportHandler;
 import de.davboecki.multimodworld.plugin.yaml.MyYamlConstructor;
-import de.davboecki.multimodworld.server.ForgeLoginHooks;
-import de.davboecki.multimodworld.server.ModChecker;
-import de.davboecki.multimodworld.server.plugin.IModWorldHandlePlugin;
 import de.davboecki.multimodworld.plugin.settings.ExchangeWorldSetting;
 import de.davboecki.multimodworld.plugin.settings.Settings;
 import de.davboecki.multimodworld.plugin.settings.WorldSetting;
 import de.davboecki.multimodworld.plugin.inventory.ModItemSaver;
 
+import de.davboecki.multimodworld.api.ForgeLoginHooks;
+import de.davboecki.multimodworld.api.ModChecker;
+import de.davboecki.multimodworld.api.plugin.IModWorldHandlePlugin;
 
 public class PrivatChest extends JavaPlugin {
 	
@@ -141,16 +141,13 @@ public class PrivatChest extends JavaPlugin {
 	        
 	        log.info("[PrivatChest] Plugin v"+this.getDescription().getVersion()+" has been enabled!");
 	        if(MultiModWorld != null) {
-	        	String ModVersion = de.davboecki.multimodworld.server.ModChecker.getVersion();
-	        	boolean modcorrect = de.davboecki.multimodworld.server.ModChecker.checkNetModded();
+	        	String ModVersion = de.davboecki.multimodworld.api.ModChecker.getVersion();
 	        	String MultiModWorldVersion = "v1.1.2";
 	        	boolean correctversion = ModVersion.equalsIgnoreCase(MultiModWorldVersion);
-	        	if(!correctversion || !modcorrect) {
+	        	if(!correctversion) {
 	        		this.getServer().getPluginManager().disablePlugin(this);
 	        		if(!correctversion)
 	        			log.severe("[MultiModWorld] Mod "+ModVersion+" has been found. But "+MultiModWorldVersion+" is required.");
-	        		if(!modcorrect)
-	        			log.severe("[MultiModWorld] Mod "+ModVersion+" has been found. Server mod not correctly installed.");
 	        	} else {
 	        		log.info("[MultiModWorld] Mod "+ModVersion+" has been enabled.");
 	        	}

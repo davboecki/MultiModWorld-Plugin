@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import de.davboecki.multimodworld.server.ForgeLoginHooks;
+import de.davboecki.multimodworld.api.ForgeLoginHooks;
 
 
 public class RoomControler {

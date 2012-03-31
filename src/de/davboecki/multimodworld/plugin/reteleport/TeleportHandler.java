@@ -35,7 +35,7 @@ import de.davboecki.multimodworld.plugin.RoomLocation;
 import de.davboecki.multimodworld.plugin.commandhandler.CallableObjects;
 import de.davboecki.multimodworld.plugin.commandhandler.ConfirmListener;
 import de.davboecki.multimodworld.plugin.settings.Settings;
-import de.davboecki.multimodworld.server.ForgeLoginHooks;
+import de.davboecki.multimodworld.api.ForgeLoginHooks;
 
 public class TeleportHandler {
 	

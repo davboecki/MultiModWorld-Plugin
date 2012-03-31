@@ -13,9 +13,9 @@ import org.bukkit.inventory.ItemStack;
 
 import de.davboecki.multimodworld.plugin.PrivatChest;
 import de.davboecki.multimodworld.plugin.reteleport.ReTeleportThread;
-import de.davboecki.multimodworld.server.ForgeLoginHooks;
-import de.davboecki.multimodworld.server.modhandleevent.ModsMissingHandleEvent;
-import de.davboecki.multimodworld.server.modhandleevent.ModsOKHandleEvent;
+import de.davboecki.multimodworld.api.ForgeLoginHooks;
+import de.davboecki.multimodworld.api.modhandleevent.ModsMissingHandleEvent;
+import de.davboecki.multimodworld.api.modhandleevent.ModsOKHandleEvent;
 
 
 public class PlayerModPacketListener implements Listener{

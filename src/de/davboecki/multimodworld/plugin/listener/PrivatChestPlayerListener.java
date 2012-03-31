@@ -33,7 +33,7 @@ import de.davboecki.multimodworld.plugin.commandhandler.CallableObjects;
 import de.davboecki.multimodworld.plugin.reteleport.ReTeleportThread;
 import de.davboecki.multimodworld.plugin.reteleport.TeleportHandler;
 import de.davboecki.multimodworld.plugin.settings.Settings;
-import de.davboecki.multimodworld.server.ForgeLoginHooks;
+import de.davboecki.multimodworld.api.ForgeLoginHooks;
 
 import java.util.ArrayList;
 import java.util.HashMap;

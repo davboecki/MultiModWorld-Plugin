@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import net.minecraft.server.Entity;
 import net.minecraft.server.Packet;
 import de.davboecki.multimodworld.plugin.settings.Settings;
-import de.davboecki.multimodworld.server.plugin.IModWorldHandlePlugin;
+import de.davboecki.multimodworld.api.plugin.IModWorldHandlePlugin;
 
 public class MultiModWorld implements IModWorldHandlePlugin{
 	

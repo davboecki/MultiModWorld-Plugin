@@ -10,7 +10,7 @@ import net.minecraft.server.Packet;
 import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.Packet5EntityEquipment;
 import de.davboecki.multimodworld.plugin.PrivatChest;
-import de.davboecki.multimodworld.server.ForgeLoginHooks;
+import de.davboecki.multimodworld.api.ForgeLoginHooks;
 
 public class PacketListener{
 	
