@@ -107,7 +107,7 @@ public class PrivatChest extends JavaPlugin {
     		init  = true;
 	    	boolean flag = false;
 			try {
-				Class HandleInterface = Class.forName("de.davboecki.multimodworld.server.plugin.IModWorldHandlePlugin");
+				Class HandleInterface = Class.forName("de.davboecki.multimodworld.api.plugin.IModWorldHandlePlugin");
 				if(HandleInterface != null){
 					flag = true;
 				}
@@ -130,13 +130,13 @@ public class PrivatChest extends JavaPlugin {
 	
 	        this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new ReTeleportThread(this), 1, 1);
 	        //this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new HandItemThread(this), 1, 1);
-	        
+	        /*
 	        if(pm.getPlugin("xAuth") != null) {
 	        	if(pm.getPlugin("xAuth") instanceof com.cypherx.xauth.xAuth) {
 	        		xAuth = (com.cypherx.xauth.xAuth)pm.getPlugin("xAuth");
 	        	}
 	        }
-	        
+	        */
 	        commandhandler = new CommandHandler(this);
 	        
 	        log.info("[PrivatChest] Plugin v"+this.getDescription().getVersion()+" has been enabled!");

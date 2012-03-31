@@ -47,20 +47,21 @@ public class PlayerModPacketListener implements Listener{
 		Player player = event.getPlayer();
 		
 		//xAuth
+		/*
 		boolean isxAuthGuest = false;
 		Object xPlayer = null;
 		if(plugin.isxAuth()) {
 			try {
-				xPlayer = ((com.cypherx.xauth.xAuth)plugin.getxAuth()).getPlayer(player.getName());
+				xPlayer = ((com.cypherx.xauth.xAuth)plugin.getxAuth()).getPlyrMngr().getPlayer(player.getName());
 				isxAuthGuest = ((com.cypherx.xauth.xAuthPlayer)xPlayer).isGuest();
 			} catch(Exception e) {}
 			if(isxAuthGuest) {
 				try {
-					((com.cypherx.xauth.xAuth)plugin.getxAuth()).removeGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
+					((com.cypherx.xauth.xAuth)plugin.getxAuth()).getPlyrMngr().removeGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
 				} catch(Exception e) {}
 			}
 		}
-		
+		*/
 		if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
 			ForgeLoginHooks.confirmPlayer(player);
 		}
@@ -71,11 +72,13 @@ public class PlayerModPacketListener implements Listener{
 				for(Object MessageObject:IDMessage.get(player.getName()).split("\n")){
 					player.sendMessage((String)MessageObject);
 				}
+				/*
 				if(isxAuthGuest) {
 					try {	
 						((com.cypherx.xauth.xAuth)plugin.getxAuth()).createGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
 					} catch(Exception e) {}
 				}
+				*/
 				return;
 			}
 		}
@@ -91,9 +94,12 @@ public class PlayerModPacketListener implements Listener{
 			
 			Location TeleportLoc = new Location(player.getWorld(), 26.5, 8, 6.5, 90, 0);
 			plugin.teleporthandler.teleport(player,TeleportLoc);
+			/*
 			if(!isxAuthGuest) {
+			
 				ReTeleportThread.add(20,player,TeleportLoc);
 			}
+			 */
 		    player.sendMessage("§2Teleportiert");
 		    player.sendMessage("You are now in the §1Mod Stargate§f Room");
 		    TeleportPlayer.remove(player);
@@ -112,9 +118,11 @@ public class PlayerModPacketListener implements Listener{
 			}
 			if(PrivatChest.debug()) player.sendMessage("ModLoaderMP OK, Teleporting to:"+loc.toString());
 			plugin.teleporthandler.teleport(player,loc);
+			/*
 			if(!isxAuthGuest) {
 				ReTeleportThread.add(20,player,loc);
 			}
+			*/
 			TeleportDestination.remove(player.getName());
 		} else if(CallableAction.containsKey(player.getName())){
 			try{
@@ -124,12 +132,12 @@ public class PlayerModPacketListener implements Listener{
 				e.printStackTrace();
 			}
 		}
-		
+		/*
 		if(isxAuthGuest) {
 			try {
 				((com.cypherx.xauth.xAuth)plugin.getxAuth()).createGuest((com.cypherx.xauth.xAuthPlayer) xPlayer);
 			} catch(Exception e) {}
 		}
-		
+		*/
 	}
 }
