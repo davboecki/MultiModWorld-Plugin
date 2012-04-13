@@ -123,7 +123,6 @@ public class PrivatChest extends JavaPlugin {
 	        pm.registerEvents(CreatueSpawnListener, this);
 	        pm.registerEvents(PrivatChestBlockListener, this);
 	        pm.registerEvents(WorldLoadListener, this);
-	        pm.registerEvents(PlayerModPacketListener, this);
 	        pm.registerEvents(FurnaceListener, this);
 	        pm.registerEvents(PlayerPreCommandListener, this);
 	        pm.registerEvents(confirmlistener, this);

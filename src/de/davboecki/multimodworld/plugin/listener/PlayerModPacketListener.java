@@ -14,11 +14,9 @@ import org.bukkit.inventory.ItemStack;
 import de.davboecki.multimodworld.plugin.PrivatChest;
 import de.davboecki.multimodworld.plugin.reteleport.ReTeleportThread;
 import de.davboecki.multimodworld.api.ForgeLoginHooks;
-import de.davboecki.multimodworld.api.modhandleevent.ModsMissingHandleEvent;
-import de.davboecki.multimodworld.api.modhandleevent.ModsOKHandleEvent;
 
 
-public class PlayerModPacketListener implements Listener{
+public class PlayerModPacketListener{
 	
 	PrivatChest plugin;
 	public ArrayList<String> TeleportPlayer = new ArrayList<String>();
@@ -31,20 +29,15 @@ public class PlayerModPacketListener implements Listener{
 		plugin = instance;
 	}
 	
-	@EventHandler
-	public void onModsMissingHandle(ModsMissingHandleEvent event) {
-		Player player = event.getPlayer();
+	public void onModsMissingHandle(Player player,ArrayList<String> Missing) {
 		ForgeLoginHooks.removeSended(player);
-		ArrayList<String> Missing = event.getMissingModList();
 		player.sendMessage("§4You are missing the following mods:");
 		for(String Mod: Missing){
 			player.sendMessage(Mod);
 		}
 	}
 	
-	@EventHandler
-	public void onModsOKHandle(ModsOKHandleEvent event){
-		Player player = event.getPlayer();
+	public void onModsOKHandle(Player player) {
 		
 		//xAuth
 		/*
