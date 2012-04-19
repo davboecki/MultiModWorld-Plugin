@@ -7,7 +7,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.entity.Player;
 
 import net.minecraft.server.Packet;
-import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.Packet5EntityEquipment;
 import de.davboecki.multimodworld.plugin.PrivatChest;
 import de.davboecki.multimodworld.api.ForgeLoginHooks;
@@ -27,11 +26,7 @@ public class PacketListener{
 		try {
 			if(packet == null) return true;
 			if(player == null) return true;
-			if(packet instanceof Packet230ModLoader){
-				if(!ForgeLoginHooks.isPlayerConfirmed(player) && !AllowModLoaderPacket && !ForgeLoginHooks.isPlayerSended(player)){
-					return false;
-				}
-			} else if(packet instanceof Packet5EntityEquipment){
+			if(packet instanceof Packet5EntityEquipment){
 				Packet5EntityEquipment Equipment = (Packet5EntityEquipment)packet;
 				if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
 					if(plugin.MultiModWorld.isIdAllowed(player.getWorld().getName(), Equipment.c)) {
