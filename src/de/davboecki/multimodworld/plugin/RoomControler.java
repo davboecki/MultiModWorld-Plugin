@@ -173,7 +173,7 @@ public class RoomControler {
             loc.setZ((plugin.RoomControl.getRoomlocation(player).getZ() * 7) +
                 3.5);
         } else {
-            if (plugin.getSettings().ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Mod")) {
+            if (plugin.getSettings().ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Mod") && ForgeLoginHooks.isPlayerConfirmed(player)) {
                 loc = new Location(player.getWorld(), 6.5 + 16, 8, 6.5);
             } else {
                 loc = new Location(player.getWorld(), 6.5, 8, 6.5);

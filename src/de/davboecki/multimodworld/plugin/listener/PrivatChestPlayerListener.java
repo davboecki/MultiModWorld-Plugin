@@ -199,7 +199,7 @@ public class PrivatChestPlayerListener implements Listener {
                 player.sendMessage("You were not supposed to be there. (Position Check)");
             } else {
                 if (!Teleport.get(player.getName())) {
-                    if ((Timer.get(player.getName()) + 10) < world.getTime()) {
+                    if ((Timer.get(player.getName()) + 2) < world.getTime()) {
                         Teleport.put(player.getName(), true);
                     }
                 }
