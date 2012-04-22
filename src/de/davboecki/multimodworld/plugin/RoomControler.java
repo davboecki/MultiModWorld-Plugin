@@ -3,8 +3,7 @@ package de.davboecki.multimodworld.plugin;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.minecraft.server.ModLoaderMp;
-
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -150,7 +149,7 @@ public class RoomControler {
     	Location loc = new Location(world, 6.5, 8, 6.5);
     	CheckItem Checker = new CheckItem(plugin, world.getName());
     	if(plugin.getSettings().ExchangeWorlds.containsKey(world.getName())){
-	        if (plugin.getSettings().ExchangeWorlds.get(world.getName()).WorldType.equalsIgnoreCase("Mod")) {
+	        if (plugin.getSettings().ExchangeWorlds.get(world.getName()).WorldType.equalsIgnoreCase("Mod") && ForgeLoginHooks.isPlayerConfirmed(player)) {
 	            loc = new Location(world, 6.5 + 16, 8, 6.5);
 	        } else{
 	            loc = new Location(world, 6.5, 8, 6.5);
@@ -247,20 +246,16 @@ public class RoomControler {
             	if(plugin.Settings.ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Creative")){
             	player.getInventory().clear();
             	boolean Armor = false;
-            	Material Boots = player.getInventory().getBoots().getType();
-            	if(Boots != Material.AIR){
+            	if(player.getInventory().getBoots() != null && player.getInventory().getBoots().getType() != Material.AIR){
             		Armor = true;
             	}
-            	Material Chestplate = player.getInventory().getChestplate().getType();
-            	if(Chestplate != Material.AIR ){
+            	if(player.getInventory().getChestplate() != null && player.getInventory().getChestplate().getType() != Material.AIR){
             		Armor = true;
             	}
-            	Material Helmet = player.getInventory().getHelmet().getType();
-            	if(Helmet != Material.AIR){
+            	if(player.getInventory().getHelmet() != null && player.getInventory().getHelmet().getType() != Material.AIR){
             		Armor = true;
             	}
-            	Material Leggings = player.getInventory().getLeggings().getType();
-            	if(Leggings != Material.AIR){
+            	if(player.getInventory().getLeggings() != null && player.getInventory().getLeggings().getType() != Material.AIR){
             		Armor = true;
             	}
             	if(Armor){
@@ -289,17 +284,15 @@ public class RoomControler {
             }
         } else if (Target == "OUT_MOD") {
         	if(plugin.Settings.ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Mod")){
-        		if(!ForgeLoginHooks.isPlayerConfirmed(player)){
-        			plugin.PlayerModPacketListener.TeleportPlayer.add(player.getName());
-        			if(plugin.debug())plugin.log.info("Packet 230: "+player.getName()+": RoomControler");
-        			plugin.sendModLoaderPacket(player);
-        		} else {
+        		if(ForgeLoginHooks.isPlayerConfirmed(player)) {
 	    	        Location TeleportLoc = new Location(player.getWorld(), 26.5, 8,
 	                    6.5, 90, 0);
 	
 	    	        player.teleport(TeleportLoc);
 	    	        player.sendMessage("§2Teleportiert");
 	    	        player.sendMessage("You are now in the §1Mod Stargate§f Room");
+        		} else {
+        			player.sendMessage(ChatColor.RED+"You can't join into the Mod Stargate Room without a installed Mod.");
         		}
     	        return true;
         	} else if(plugin.Settings.ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Creative")){

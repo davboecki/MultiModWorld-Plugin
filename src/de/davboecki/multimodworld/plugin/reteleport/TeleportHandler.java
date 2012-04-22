@@ -7,7 +7,6 @@ import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ModLoader;
-import net.minecraft.server.ModLoaderMp;
 import net.minecraft.server.Packet51MapChunk;
 import net.minecraft.server.Packet70Bed;
 import net.minecraft.server.Packet9Respawn;
@@ -103,29 +102,7 @@ public class TeleportHandler {
         World world = event.getTo().getWorld();
     	if(Settings.getWorldSetting(world.getName()).CheckTeleport && !Settings.getInstance().ExchangeWorlds.containsKey(world.getName())) {
 	    	if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
-	    		plugin.PrivatChestPlayerListener.addMoveTask(player.getName(),new CallableObjects(new Object[]{event.getPlayer(),plugin.confirmlistener},plugin){
-    				long LastTime;
-    	    		@Override
-    				public Object call() throws Exception {
-    	    			if(LastTime + 2000 > System.currentTimeMillis()) {
-    	    				return false;
-    	    			}
-    	    			LastTime = System.currentTimeMillis();
-						if(((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName()))((Player)args[0]).sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
-						return !((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName());
-					}
-				});
-	    		plugin.confirmlistener.addTask(new CallableObjects(new Object[]{event.getPlayer().getName(),event.getTo(),player},plugin){
-					@Override
-					public Object call() throws Exception {
-			    		plugin.PlayerModPacketListener.TeleportDestination.put((String)args[0], (Location)args[1]);
-			    		if(PrivatChest.debug()) plugin.log.info("Packet 230: "+((String)args[0])+": OnPlayerTeleport, World: "+((Location)args[1]).getWorld().getName());
-			    		((Player)args[2]).sendMessage(ChatColor.GREEN+"Teleporting to destination ...");
-			    		plugin.sendModLoaderPacket((Player)args[2]);
-						return null;
-					}
-    			},player.getName());
-	    		player.sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
+	    		player.sendMessage(ChatColor.RED+"You can't teleport into a modded world. You are missing mods.");
 	    		if(Settings.getWorldSetting(event.getFrom().getWorld().getName()).CheckTeleport) {
 	    			Location loc = getPlayerExchangeWorldLocation(player);
 	    			event.setTo(loc);
@@ -163,9 +140,6 @@ public class TeleportHandler {
     		World world = event.getRespawnLocation().getWorld();
         	if(Settings.getWorldSetting(world.getName()).CheckTeleport) {
     	    	if(!ForgeLoginHooks.isPlayerConfirmed(player)){
-    	    		plugin.PlayerModPacketListener.TeleportDestination.put(player.getName(), event.getRespawnLocation());
-    	    		if(PrivatChest.debug()) plugin.log.info("Packet 230: "+event.getPlayer().getName()+": onPlayerRespawn, World: "+world.getName());
-    	    		plugin.sendModLoaderPacket(player);
     	    		Location loc = new Location(getFirstModChangeWorld(), 6.5, 10, 6.5);
     	    		isLocalTeleport = true;
     	    		event.setRespawnLocation(loc);
@@ -187,7 +161,7 @@ public class TeleportHandler {
     	ReTeleportThread.add(10,player,playerLoc);
     }
     
-	public void HandleJoin(PlayerJoinEvent event, boolean SendPacket) {
+	public void HandleJoin(PlayerJoinEvent event) {
 		if(event.getPlayer().getWorld().getGenerator() != plugin.Worldgen){
     		Player player = event.getPlayer();
     		World world = player.getLocation().getWorld();
@@ -205,34 +179,6 @@ public class TeleportHandler {
 	    	    	((CraftPlayer)player).getHandle().netServerHandler.sendPacket(new Packet51MapChunk(((CraftChunk)world.getChunkAt(player.getLocation())).getHandle(),true,0));
 	    	    	//teleport(player,loc);
 	    	    	//ReTeleportThread.add(10,player,loc);
-		        	if(!SendPacket) {
-		    	    	player.sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
-		    	    	plugin.confirmlistener.addTask(new CallableObjects(new Object[]{player,Oldloc},plugin){
-		    				@Override
-		    				public Object call() throws Exception {
-		    		    		plugin.PlayerModPacketListener.TeleportDestination.put(((Player)args[0]).getName(), (Location)args[1]);
-		    		    		if(PrivatChest.debug())plugin.log.info("Packet 230: "+(((Player)args[0]).getName())+": OnJoinConfirm, World: "+((Location)args[1]).getWorld().getName());
-		    					((Player)args[0]).sendMessage(ChatColor.GREEN+"Teleported to old world.");
-		    					plugin.sendModLoaderPacket((Player)args[0]);
-		    					return null;
-		    				}
-		        		},player.getName());
-		    	    	plugin.PrivatChestPlayerListener.addMoveTask(player.getName(),new CallableObjects(new Object[]{event.getPlayer(),plugin.confirmlistener},plugin){
-		    				long LastTime;
-		    	    		@Override
-		    				public Object call() throws Exception {
-		    	    			if(LastTime + 2000 > System.currentTimeMillis()) {
-		    	    				return false;
-		    	    			}
-		    	    			LastTime = System.currentTimeMillis();
-		    					if(((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName()))((Player)args[0]).sendMessage(ChatColor.AQUA+"Send ModLoaderMP Packet 230? <"+ChatColor.GREEN+"yes"+ChatColor.AQUA+"/"+ChatColor.RED+"no"+ChatColor.AQUA+">");
-		    					return !((ConfirmListener)args[1]).ExistTaskFor(((Player)args[0]).getName());
-		    				}
-		    			});
-		        	} else {
-		        		plugin.PlayerModPacketListener.TeleportDestination.put(player.getName(), Oldloc);
-			    		
-		        	}
 	        	}
 	        	return;
         	}

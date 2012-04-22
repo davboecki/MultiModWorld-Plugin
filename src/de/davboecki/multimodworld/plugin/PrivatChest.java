@@ -3,7 +3,6 @@ package de.davboecki.multimodworld.plugin;
 import net.minecraft.server.BaseMod;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.ModLoaderMp;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -53,7 +52,7 @@ import de.davboecki.multimodworld.api.plugin.IModWorldHandlePlugin;
 
 public class PrivatChest extends JavaPlugin {
 	
-    public FlatWorldGenerator Worldgen = new FlatWorldGenerator();
+    public static FlatWorldGenerator Worldgen = new FlatWorldGenerator();
     public PlayerPositionCheck PlayerPositionCheck = new PlayerPositionCheck(this);
     
     public Logger log = Logger.getLogger("Minecraft");
@@ -70,23 +69,12 @@ public class PrivatChest extends JavaPlugin {
     public Settings Settings = new Settings(this);
     private Yaml yaml;
     private CommandHandler commandhandler = null;
-    public MultiModWorld MultiModWorld = null;
+    public static MultiModWorld MultiModWorld = null;
     public TeleportHandler teleporthandler = new TeleportHandler(this);
     public PacketListener PacketListener = new PacketListener(this);
     public ModItemSaver ModItemSaver = new ModItemSaver(this);
     private boolean init = false;
     
-    //Plugins
-    private Object xAuth = null;
-    
-    public Object getxAuth() {
-		return xAuth;
-	}
-
-	public boolean isxAuth() {
-		return xAuth != null;
-	}
-
 	//Debug Mode
     private static boolean debug = false;
     public static boolean debug(){
@@ -104,7 +92,6 @@ public class PrivatChest extends JavaPlugin {
     
 	public void onEnable() {
     	if(!init) {
-    		init  = true;
 	    	boolean flag = false;
 			try {
 				Class HandleInterface = Class.forName("de.davboecki.multimodworld.api.plugin.IModWorldHandlePlugin");
@@ -112,47 +99,41 @@ public class PrivatChest extends JavaPlugin {
 					flag = true;
 				}
 			} catch (Exception e) {}
-			if(flag) {
+			if(flag && MultiModWorld != null) {
 		        log.info("[PrivatChest] IModWorldHandlePlugin class found!");
 				MultiModWorld = new MultiModWorld(this);
 				ModChecker.registerIModWorldHandlePlugin(MultiModWorld);
 			}
-	    	
-	        PluginManager pm = this.getServer().getPluginManager();
-	        pm.registerEvents(PrivatChestPlayerListener, this);
-	        pm.registerEvents(CreatueSpawnListener, this);
-	        pm.registerEvents(PrivatChestBlockListener, this);
-	        pm.registerEvents(WorldLoadListener, this);
-	        pm.registerEvents(FurnaceListener, this);
-	        pm.registerEvents(PlayerPreCommandListener, this);
-	        pm.registerEvents(confirmlistener, this);
-	
-	        this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new ReTeleportThread(this), 1, 1);
-	        //this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new HandItemThread(this), 1, 1);
-	        /*
-	        if(pm.getPlugin("xAuth") != null) {
-	        	if(pm.getPlugin("xAuth") instanceof com.cypherx.xauth.xAuth) {
-	        		xAuth = (com.cypherx.xauth.xAuth)pm.getPlugin("xAuth");
-	        	}
-	        }
-	        */
-	        commandhandler = new CommandHandler(this);
-	        
-	        log.info("[PrivatChest] Plugin v"+this.getDescription().getVersion()+" has been enabled!");
-	        if(MultiModWorld != null) {
-	        	String ModVersion = de.davboecki.multimodworld.api.ModChecker.getVersion();
-	        	String MultiModWorldVersion = "v1.1.2";
-	        	boolean correctversion = ModVersion.equalsIgnoreCase(MultiModWorldVersion);
-	        	if(!correctversion) {
-	        		this.getServer().getPluginManager().disablePlugin(this);
-	        		if(!correctversion)
-	        			log.severe("[MultiModWorld] Mod "+ModVersion+" has been found. But "+MultiModWorldVersion+" is required.");
-	        	} else {
-	        		log.info("[MultiModWorld] Mod "+ModVersion+" has been enabled.");
-	        	}
-	        }
     	}
-    	
+	    PluginManager pm = this.getServer().getPluginManager();
+	    pm.registerEvents(PrivatChestPlayerListener, this);
+	    pm.registerEvents(CreatueSpawnListener, this);
+	    pm.registerEvents(PrivatChestBlockListener, this);
+	    pm.registerEvents(WorldLoadListener, this);
+	    pm.registerEvents(FurnaceListener, this);
+	    pm.registerEvents(PlayerPreCommandListener, this);
+	    pm.registerEvents(confirmlistener, this);
+	
+	    this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new ReTeleportThread(this), 1, 1);
+
+	    commandhandler = new CommandHandler(this);
+	        
+	    log.info("[PrivatChest] Plugin v"+this.getDescription().getVersion()+" has been enabled!");
+	    if(!init) {
+		    if(MultiModWorld != null) {
+		    	String ModVersion = de.davboecki.multimodworld.api.ModChecker.getVersion();
+		        String MultiModWorldVersion = "v1.2.0";
+		        boolean correctversion = ModVersion.equalsIgnoreCase(MultiModWorldVersion);
+		        if(!correctversion) {
+		        	this.getServer().getPluginManager().disablePlugin(this);
+		        	if(!correctversion)
+		        		log.severe("[MultiModWorld] Mod "+ModVersion+" has been found. But "+MultiModWorldVersion+" is required.");
+		        } else {
+		        	log.info("[MultiModWorld] Mod "+ModVersion+" has been enabled.");
+		        }
+		    }
+		init  = true;
+	    }
         Settings.load();
         ModItemSaver.load();
     }
@@ -164,14 +145,6 @@ public class PrivatChest extends JavaPlugin {
     	Settings.save();
         ModItemSaver.save();
         log.info("[PrivatChest] Plugin v"+this.getDescription().getVersion()+" has been disabled.");
-    }
-    
-    public void sendModLoaderPacket(Player player){
-    	PacketListener.AllowModLoaderPacket = true;
-    	if(MultiModWorld != null) {
-    		ModLoaderMp.handleAllLogins(((CraftPlayer)player).getHandle());
-    	}
-    	PacketListener.AllowModLoaderPacket = false;
     }
     
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

@@ -90,7 +90,7 @@ public class CheckItem {
         boolean NoItem = true;
 
         for (int i = 0; i < 36; i++) {
-            boolean tmp = player.getInventory().getItem(i).getType() == Material.AIR;
+            boolean tmp = player.getInventory().getItem(i) == null || player.getInventory().getItem(i).getType() == Material.AIR;
             NoItem &= tmp;
 
             if (!tmp && Ausgabe) {
@@ -99,28 +99,28 @@ public class CheckItem {
         }
         //Helm
         boolean tmp;
-        tmp = player.getInventory().getHelmet().getType() == Material.AIR;
+        tmp = player.getInventory().getHelmet() == null || player.getInventory().getHelmet().getType() == Material.AIR;
         NoItem &= tmp;
 
         if (!tmp && Ausgabe) {
         	Message(player, player.getInventory().getHelmet());
         }
         //Torso
-        tmp = player.getInventory().getChestplate().getType() == Material.AIR;
+        tmp = player.getInventory().getChestplate() == null || player.getInventory().getChestplate().getType() == Material.AIR;
         NoItem &= tmp;
 
         if (!tmp && Ausgabe) {
         	Message(player, player.getInventory().getChestplate());
         }
         //Beine
-        tmp = player.getInventory().getLeggings().getType() == Material.AIR;
+        tmp = player.getInventory().getLeggings() == null || player.getInventory().getLeggings().getType() == Material.AIR;
         NoItem &= tmp;
 
         if (!tmp && Ausgabe) {
         	Message(player, player.getInventory().getLeggings());
         }
         //Legs
-        tmp = player.getInventory().getBoots().getType() == Material.AIR;
+        tmp = player.getInventory().getBoots() == null || player.getInventory().getBoots().getType() == Material.AIR;
         NoItem &= tmp;
 
         if (!tmp && Ausgabe) {
@@ -176,6 +176,6 @@ public class CheckItem {
     }
 
     public boolean CheckaItem(ItemStack Item) {
-    	return (ExchangeWorld ? Settings.getItemListExchangeWorld(WorldName).contains(Item.getTypeId()) : Settings.getItemList(WorldName).contains(Item.getTypeId())) || Item.getTypeId() == 0 || Item.getType() == Material.AIR;
+    	return Item == null || (ExchangeWorld ? Settings.getItemListExchangeWorld(WorldName).contains(Item.getTypeId()) : Settings.getItemList(WorldName).contains(Item.getTypeId())) || Item.getTypeId() == 0 || Item.getType() == Material.AIR;
     }
 }

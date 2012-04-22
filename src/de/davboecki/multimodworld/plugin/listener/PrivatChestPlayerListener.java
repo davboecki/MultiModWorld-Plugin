@@ -2,7 +2,6 @@ package de.davboecki.multimodworld.plugin.listener;
 
 import net.minecraft.server.Block;
 import net.minecraft.server.EntityHuman;
-import net.minecraft.server.ModLoaderMp;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -102,19 +101,12 @@ public class PrivatChestPlayerListener implements Listener {
         	playerLoc = plugin.RoomControl.playertospawn(player);
         }
         
-        boolean SendPacket = ForgeLoginHooks.isPlayerSended(player);
+        
         if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
-        	if(plugin.ModItemSaver.exportModItems(player)){
-        		SendPacket = true;
-        	}
+        	plugin.ModItemSaver.exportModItems(player);
         }
         
-        plugin.teleporthandler.HandleJoin(event,SendPacket);
-
-    	if(SendPacket && !ForgeLoginHooks.isPlayerSended(player)) {
-			if(PrivatChest.debug())plugin.log.info("Packet 230: "+event.getPlayer().getName()+": ModInventory");
-			plugin.sendModLoaderPacket(player);
-        }
+        plugin.teleporthandler.HandleJoin(event);
     }
 
     @EventHandler
@@ -276,16 +268,7 @@ public class PrivatChestPlayerListener implements Listener {
     			}
     		}
     		if(ModItems){
-    			if(PrivatChest.debug())plugin.log.info("Packet 230: "+event.getPlayer().getName()+": ModChest");
-    			plugin.sendModLoaderPacket(event.getPlayer());
     			event.setCancelled(true);
-    			plugin.PlayerModPacketListener.CallableAction.put(event.getPlayer().getName(), new CallableObjects(new Object[]{((CraftWorld)event.getPlayer().getWorld()).getHandle(),event.getClickedBlock().getX(),event.getClickedBlock().getY(),event.getClickedBlock().getZ(),((CraftPlayer) event.getPlayer()).getHandle()},plugin){
-					@Override
-					public Object call() throws Exception {
-						net.minecraft.server.Block.CHEST.interact((net.minecraft.server.World)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3], (EntityHuman)args[4]);
-						return null;
-					}
-    			});
     		}
     	}
     }
