@@ -99,7 +99,7 @@ public class PrivatChest extends JavaPlugin {
 					flag = true;
 				}
 			} catch (Exception e) {}
-			if(flag && MultiModWorld != null) {
+			if(flag && MultiModWorld == null) {
 		        log.info("[PrivatChest] IModWorldHandlePlugin class found!");
 				MultiModWorld = new MultiModWorld(this);
 				ModChecker.registerIModWorldHandlePlugin(MultiModWorld);
