@@ -21,6 +21,7 @@ public class PlayerModPacketListener{
 	PrivatChest plugin;
 	public ArrayList<String> TeleportPlayer = new ArrayList<String>();
 	public HashMap<String,Location> TeleportDestination = new HashMap<String,Location>();
+	public HashMap<String,ArrayList<String>> MissingMods = new HashMap<String,ArrayList<String>>();
 	public HashMap<String,Callable> CallableAction = new HashMap<String,Callable>();
 	public static HashMap<String,String> IDMessage = new HashMap<String,String>();
 	public static HashMap<String,Boolean> IDBoolean = new HashMap<String,Boolean>();
@@ -35,6 +36,7 @@ public class PlayerModPacketListener{
 		for(String Mod: Missing){
 			player.sendMessage(Mod);
 		}
+		MissingMods.put(player.getName(), Missing);
 	}
 	
 	public void onModsOKHandle(Player player) {

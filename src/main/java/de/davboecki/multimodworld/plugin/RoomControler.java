@@ -291,6 +291,11 @@ public class RoomControler {
 	    	        player.teleport(TeleportLoc);
 	    	        player.sendMessage("§2Teleportiert");
 	    	        player.sendMessage("You are now in the §1Mod Stargate§f Room");
+        		} else if(plugin.PlayerModPacketListener.MissingMods.containsKey(player.getName())) {
+        			player.sendMessage("§4You are missing the following mods:");
+        			for(String Mod: plugin.PlayerModPacketListener.MissingMods.get(player.getName())){
+        				player.sendMessage(Mod);
+        			}
         		} else {
         			player.sendMessage(ChatColor.RED+"You can't join into the Mod Stargate Room without a installed Mod.");
         		}
