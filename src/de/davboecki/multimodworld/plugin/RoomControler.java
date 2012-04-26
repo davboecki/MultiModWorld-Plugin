@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import de.davboecki.multimodworld.api.ForgeLoginHooks;
+import de.davboecki.multimodworld.api.plugin.PlayerStatus;
 
 
 public class RoomControler {
@@ -149,7 +149,7 @@ public class RoomControler {
     	Location loc = new Location(world, 6.5, 8, 6.5);
     	CheckItem Checker = new CheckItem(plugin, world.getName());
     	if(plugin.getSettings().ExchangeWorlds.containsKey(world.getName())){
-	        if (plugin.getSettings().ExchangeWorlds.get(world.getName()).WorldType.equalsIgnoreCase("Mod") && ForgeLoginHooks.isPlayerConfirmed(player)) {
+	        if (plugin.getSettings().ExchangeWorlds.get(world.getName()).WorldType.equalsIgnoreCase("Mod") && !PlayerStatus.isVanilla(player.getName())) {
 	            loc = new Location(world, 6.5 + 16, 8, 6.5);
 	        } else{
 	            loc = new Location(world, 6.5, 8, 6.5);
@@ -173,7 +173,7 @@ public class RoomControler {
             loc.setZ((plugin.RoomControl.getRoomlocation(player).getZ() * 7) +
                 3.5);
         } else {
-            if (plugin.getSettings().ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Mod") && ForgeLoginHooks.isPlayerConfirmed(player)) {
+            if (plugin.getSettings().ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Mod") && !PlayerStatus.isVanilla(player.getName())) {
                 loc = new Location(player.getWorld(), 6.5 + 16, 8, 6.5);
             } else {
                 loc = new Location(player.getWorld(), 6.5, 8, 6.5);
@@ -284,7 +284,7 @@ public class RoomControler {
             }
         } else if (Target == "OUT_MOD") {
         	if(plugin.Settings.ExchangeWorlds.get(player.getWorld().getName()).WorldType.equalsIgnoreCase("Mod")){
-        		if(ForgeLoginHooks.isPlayerConfirmed(player)) {
+        		if(!PlayerStatus.isVanilla(player.getName())) {
 	    	        Location TeleportLoc = new Location(player.getWorld(), 26.5, 8,
 	                    6.5, 90, 0);
 	
