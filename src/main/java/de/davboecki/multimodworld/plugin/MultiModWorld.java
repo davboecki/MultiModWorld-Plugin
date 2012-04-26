@@ -43,7 +43,6 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 		return LastBlockedEntity;
 	}
 	
-	@Override
 	public boolean isIdAllowed(String WorldName, int id) {
 		if(IdAllowedLastWorld.equals(WorldName) && id == IdAllowedLastid){
 			return LastValue;
@@ -58,7 +57,6 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 		return LastValue;
 	}
 
-	@Override
 	public boolean isEntityAllowed(String WorldName, Entity entity) {
 		boolean flag;
 		String Class = entity.getClass().getName();
@@ -71,7 +69,6 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 		return flag;
 	}
 
-	@Override
 	public boolean hasWorldSetting(String WorldName, String Setting) {
 		if(Setting.equals("UseVanillaRecipes")) {
 			return Settings.getWorldSetting(WorldName).UseVanillaRecipes;
@@ -82,17 +79,14 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 		}
 	}
 
-	@Override
 	public boolean isCraftingAllowed(String WorldName, int id) {
 		return this.isIdAllowed(WorldName, id);
 	}
 
-	@Override
 	public boolean PacketSend(Packet packet, Player player) {
 		return plugin.PacketListener.PacketSend(packet, player);
 	}
 
-	@Override
 	public Entity ReplaceEntity(String WorldName, Entity entity) {
 		if(true) {
 			try {
@@ -111,7 +105,6 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 	//plugin.PlayerModPacketListener.onModsMissingHandle(var1.getBukkitEntity(), var14);
 	//plugin.PlayerModPacketListener.onModsOKHandle(var1.getBukkitEntity())
 
-	@Override
 	public boolean handleModPacketResponse(EntityPlayer eplayer, PacketModList pkt) {
 		NetworkMod[] serverMods = MinecraftForge.getNetworkMods();
         ArrayList<String> missing = new ArrayList<String>();
@@ -146,7 +139,6 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 		return true;
 	}
 
-	@Override
 	public List replaceRecipies(List recipies) {
 		// TODO Auto-generated method stub
 		return null;

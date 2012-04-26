@@ -14,7 +14,6 @@ public class HandItemThread implements Runnable{
 		this.plugin = instance;
 	}
 	
-	@Override
 	public void run() {
 		for(Player player : plugin.getServer().getOnlinePlayers()){
 			//if(player.getGameMode().equals(GameMode.CREATIVE)){
