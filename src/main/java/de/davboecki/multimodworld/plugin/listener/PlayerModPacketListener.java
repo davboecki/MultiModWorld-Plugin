@@ -11,9 +11,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
+import de.davboecki.multimodworld.api.plugin.PlayerStatus;
 import de.davboecki.multimodworld.plugin.PrivatChest;
 import de.davboecki.multimodworld.plugin.reteleport.ReTeleportThread;
-import de.davboecki.multimodworld.api.ForgeLoginHooks;
 
 
 public class PlayerModPacketListener{
@@ -30,7 +30,7 @@ public class PlayerModPacketListener{
 	}
 	
 	public void onModsMissingHandle(Player player,ArrayList<String> Missing) {
-		ForgeLoginHooks.removeSended(player);
+		PlayerStatus.setPlayerVanilla(player.getName());
 		player.sendMessage("§4You are missing the following mods:");
 		for(String Mod: Missing){
 			player.sendMessage(Mod);
@@ -55,10 +55,6 @@ public class PlayerModPacketListener{
 			}
 		}
 		*/
-		if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
-			ForgeLoginHooks.confirmPlayer(player);
-		}
-		
 		if(IDBoolean.containsKey(player.getName())){
 			if(!IDBoolean.get(player.getName())){
 				player.sendMessage("§bIds worng Linkes.");
@@ -75,8 +71,6 @@ public class PlayerModPacketListener{
 				return;
 			}
 		}
-		
-		ForgeLoginHooks.removeSended(player);
 		
 		plugin.ModItemSaver.returnModItems(player);
 		

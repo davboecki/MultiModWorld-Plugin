@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import net.minecraft.server.Packet;
 import net.minecraft.server.Packet5EntityEquipment;
 import de.davboecki.multimodworld.plugin.PrivatChest;
-import de.davboecki.multimodworld.api.ForgeLoginHooks;
+import de.davboecki.multimodworld.api.plugin.PlayerStatus;
 
 public class PacketListener{
 	
@@ -28,7 +28,7 @@ public class PacketListener{
 			if(player == null) return true;
 			if(packet instanceof Packet5EntityEquipment){
 				Packet5EntityEquipment Equipment = (Packet5EntityEquipment)packet;
-				if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
+				if(PlayerStatus.isVanilla(player.getName())) {
 					if(plugin.MultiModWorld.isIdAllowed(player.getWorld().getName(), Equipment.c)) {
 						Equipment.c = -1;
 						Equipment.d = 0;
@@ -37,7 +37,7 @@ public class PacketListener{
 					}
 				}
 			} else if(!packet.getClass().getPackage().getName().equalsIgnoreCase("net.minecraft.server")) {
-				if(!ForgeLoginHooks.isPlayerConfirmed(player)){
+				if(PlayerStatus.isVanilla(player.getName())){
 					return false;
 				}
 			}

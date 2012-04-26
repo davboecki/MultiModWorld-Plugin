@@ -46,7 +46,6 @@ import de.davboecki.multimodworld.plugin.settings.Settings;
 import de.davboecki.multimodworld.plugin.settings.WorldSetting;
 import de.davboecki.multimodworld.plugin.inventory.ModItemSaver;
 
-import de.davboecki.multimodworld.api.ForgeLoginHooks;
 import de.davboecki.multimodworld.api.ModChecker;
 import de.davboecki.multimodworld.api.plugin.IModWorldHandlePlugin;
 

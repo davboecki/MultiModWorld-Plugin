@@ -28,13 +28,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import de.davboecki.multimodworld.api.plugin.PlayerStatus;
 import de.davboecki.multimodworld.plugin.CheckItem;
 import de.davboecki.multimodworld.plugin.PrivatChest;
 import de.davboecki.multimodworld.plugin.RoomLocation;
 import de.davboecki.multimodworld.plugin.commandhandler.CallableObjects;
 import de.davboecki.multimodworld.plugin.commandhandler.ConfirmListener;
 import de.davboecki.multimodworld.plugin.settings.Settings;
-import de.davboecki.multimodworld.api.ForgeLoginHooks;
 
 public class TeleportHandler {
 	
@@ -101,7 +101,7 @@ public class TeleportHandler {
         Player player = event.getPlayer();
         World world = event.getTo().getWorld();
     	if(Settings.getWorldSetting(world.getName()).CheckTeleport && !Settings.getInstance().ExchangeWorlds.containsKey(world.getName())) {
-	    	if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
+	    	if(PlayerStatus.isVanilla(player.getName())) {
 	    		player.sendMessage(ChatColor.RED+"You can't teleport into a modded world. You are missing mods.");
 	    		if(Settings.getWorldSetting(event.getFrom().getWorld().getName()).CheckTeleport) {
 	    			Location loc = getPlayerExchangeWorldLocation(player);
@@ -139,7 +139,7 @@ public class TeleportHandler {
     		Player player = event.getPlayer();
     		World world = event.getRespawnLocation().getWorld();
         	if(Settings.getWorldSetting(world.getName()).CheckTeleport) {
-    	    	if(!ForgeLoginHooks.isPlayerConfirmed(player)){
+    	    	if(PlayerStatus.isVanilla(player.getName())){
     	    		Location loc = new Location(getFirstModChangeWorld(), 6.5, 10, 6.5);
     	    		isLocalTeleport = true;
     	    		event.setRespawnLocation(loc);
@@ -166,7 +166,7 @@ public class TeleportHandler {
     		Player player = event.getPlayer();
     		World world = player.getLocation().getWorld();
         	if(Settings.getWorldSetting(world.getName()).CheckTeleport) {
-        		if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
+        		if(PlayerStatus.isVanilla(player.getName())) {
 	    	    	Location Oldloc = player.getLocation();
 	    	    	Location loc = getPlayerExchangeWorldLocation(player);
 	    	    	event.getPlayer().sendMessage("Join Teleport to:"+ loc.toString());

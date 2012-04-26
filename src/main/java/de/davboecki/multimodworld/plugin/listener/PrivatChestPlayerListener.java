@@ -25,6 +25,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import de.davboecki.multimodworld.api.plugin.PlayerStatus;
 import de.davboecki.multimodworld.plugin.CheckItem;
 import de.davboecki.multimodworld.plugin.ItemCheckHandler;
 import de.davboecki.multimodworld.plugin.PrivatChest;
@@ -32,7 +33,6 @@ import de.davboecki.multimodworld.plugin.commandhandler.CallableObjects;
 import de.davboecki.multimodworld.plugin.reteleport.ReTeleportThread;
 import de.davboecki.multimodworld.plugin.reteleport.TeleportHandler;
 import de.davboecki.multimodworld.plugin.settings.Settings;
-import de.davboecki.multimodworld.api.ForgeLoginHooks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,8 +58,6 @@ public class PrivatChestPlayerListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
-        ForgeLoginHooks.removePlayer(player);
-		ForgeLoginHooks.removeSended(player);
 		if(plugin.confirmlistener.ExistTaskFor(player.getName())) {
 			plugin.confirmlistener.removeTask(player.getName());
 		}
@@ -102,7 +100,7 @@ public class PrivatChestPlayerListener implements Listener {
         }
         
         
-        if(!ForgeLoginHooks.isPlayerConfirmed(player)) {
+        if(PlayerStatus.isVanilla(player.getName())) {
         	plugin.ModItemSaver.exportModItems(player);
         }
         
@@ -255,7 +253,7 @@ public class PrivatChestPlayerListener implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent event){
     	if(event.getClickedBlock() == null) return;
     	if(event.getPlayer().getWorld().getGenerator() != plugin.Worldgen) return;
-    	if(ForgeLoginHooks.isPlayerConfirmed(event.getPlayer())) return;
+    	if(!PlayerStatus.isVanilla(event.getPlayer().getName())) return;
     	if(!plugin.PlayerPositionCheck.PlayerinRoom(event.getPlayer())) return;
     	if(event.getClickedBlock().getTypeId() == Block.CHEST.id) {
     		boolean ModItems = false;
