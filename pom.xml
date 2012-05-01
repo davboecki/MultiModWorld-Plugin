@@ -4,6 +4,10 @@
   <artifactId>MultiModWorld-Plugin</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <scm>
     <connection>scm:git:git://github.com/davboecki/MultiModWorld-Plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/davboecki/MultiModWorld-Plugin.git</developerConnection>

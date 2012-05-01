@@ -69,9 +69,8 @@ public class PacketListener{
 			*/
 			if(packet instanceof Packet53BlockChange) {
 				try {
-					packet.getClass().getDeclaredField("vanilla"); //Crash and go on if wrong version
-					Packet53BlockChange packet53 = (Packet53BlockChange)packet;
-					packet53.vanilla = PlayerStatus.isVanilla(player.getName());
+					Field vanilla = packet.getClass().getDeclaredField("vanilla"); //Crash and go on if wrong version
+					vanilla.set(packet, PlayerStatus.isVanilla(player.getName()));
 				} catch(Exception e) {
 					
 				}
