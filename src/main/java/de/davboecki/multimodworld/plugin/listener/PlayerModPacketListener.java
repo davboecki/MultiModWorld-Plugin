@@ -32,7 +32,7 @@ public class PlayerModPacketListener{
 	
 	public void onModsMissingHandle(Player player,ArrayList<String> Missing) {
 		PlayerStatus.setPlayerVanilla(player.getName());
-		player.sendMessage("§4You are missing the following mods:");
+		player.sendMessage(ChatColor.BLUE+"You are missing the following mods:");
 		for(String Mod: Missing){
 			player.sendMessage(Mod);
 		}
@@ -59,7 +59,7 @@ public class PlayerModPacketListener{
 		*/
 		if(IDBoolean.containsKey(player.getName())){
 			if(!IDBoolean.get(player.getName())){
-				player.sendMessage("§bIds worng Linkes.");
+				player.sendMessage("Ids worng Linkes.");
 				for(Object MessageObject:IDMessage.get(player.getName()).split("\n")){
 					player.sendMessage((String)MessageObject);
 				}
@@ -89,8 +89,8 @@ public class PlayerModPacketListener{
 				ReTeleportThread.add(20,player,TeleportLoc);
 			}
 			 */
-		    player.sendMessage("§2Teleportiert");
-		    player.sendMessage("You are now in the §1Mod Stargate§f Room");
+		    player.sendMessage("Teleporter");
+		    player.sendMessage("You are now in the Mod Stargate Room");
 		    TeleportPlayer.remove(player);
 		} else if(TeleportDestination.containsKey(player.getName())) {
 			Location loc = TeleportDestination.get(player.getName());
