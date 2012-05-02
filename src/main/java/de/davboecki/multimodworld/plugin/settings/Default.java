@@ -70,6 +70,7 @@ public class Default {
 		tmp.add("net.minecraft.server.EntityGiantZombie");
 		tmp.add("net.minecraft.server.EntityGolem");
 		tmp.add("net.minecraft.server.EntityHuman");
+		tmp.add("net.minecraft.server.EntityIronGolem");
 		tmp.add("net.minecraft.server.EntityItem");
 		tmp.add("net.minecraft.server.EntityLiving");
 		tmp.add("net.minecraft.server.EntityMagmaCube");
@@ -94,6 +95,7 @@ public class Default {
 		tmp.add("net.minecraft.server.EntityTNTPrimed");
 		tmp.add("net.minecraft.server.EntityTracker");
 		tmp.add("net.minecraft.server.EntityTrackerEntry");
+		tmp.add("net.minecraft.server.EntityThrownExpBottle");
 		tmp.add("net.minecraft.server.EntityTypes");
 		tmp.add("net.minecraft.server.EntityVillager");
 		tmp.add("net.minecraft.server.EntityWaterAnimal");
