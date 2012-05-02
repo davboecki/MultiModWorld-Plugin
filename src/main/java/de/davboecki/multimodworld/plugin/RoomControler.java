@@ -202,14 +202,14 @@ public class RoomControler {
                 TeleportLoc.setX((Roomloc.getX() * 7) + 1.5);
                 TeleportLoc.setZ((Roomloc.getZ() * 7) + 3.5);
                 player.teleport(TeleportLoc);
-                player.sendMessage("§2Teleportiert");
-                player.sendMessage("You are now in your §1PrivatChest§f Room");
+                player.sendMessage(ChatColor.DARK_GREEN+"Teleported");
+                player.sendMessage("You are now in your "+ChatColor.DARK_BLUE+"PrivatChest"+ChatColor.RESET+" Room");
 
                 return true;
             } else if(!player.hasPermission("privatchest.hasroom")){
-                player.sendMessage("§4You don't have Permission to do that.");
+                player.sendMessage(ChatColor.DARK_RED+"You don't have Permission to do that.");
             } else {
-                player.sendMessage("§1Room Not Generated");
+                player.sendMessage(ChatColor.DARK_BLUE+"Room Not Generated");
                 return false;
             }
         } else if (Target == "OUT_NORMAL") {
@@ -219,8 +219,8 @@ public class RoomControler {
 		            Location TeleportLoc = new Location(player.getWorld(), 10.5, 8,
 		                    6.5, 90, 0);
 		            player.teleport(TeleportLoc);
-		            player.sendMessage("§2Teleportiert");
-		            player.sendMessage("You are now in the §1Normal Stargate§f Room");
+	                player.sendMessage(ChatColor.DARK_GREEN+"Teleported");
+	                player.sendMessage("You are now in your "+ChatColor.DARK_BLUE+"Normal Stargate"+ChatColor.RESET+" Room");
 		            return true;
 	        	} else {
 	        		return true;
@@ -229,16 +229,16 @@ public class RoomControler {
 	            Location TeleportLoc = new Location(player.getWorld(), 10.5, 8,
 	                    6.5, 90, 0);
 	            player.teleport(TeleportLoc);
-	            player.sendMessage("§2Teleportiert");
-	            player.sendMessage("You are now in the §1Normal Stargate§f Room");
+                player.sendMessage(ChatColor.DARK_GREEN+"Teleported");
+                player.sendMessage("You are now in your "+ChatColor.DARK_BLUE+"Normal Stargate"+ChatColor.RESET+" Room");
 	            return true;
         	} else {
 	            Location TeleportLoc = new Location(player.getWorld(), 10.5, 8,
 	                    6.5, 90, 0);
 	            player.teleport(TeleportLoc);
-	            player.sendMessage("§2Teleportiert");
-	            player.sendMessage("You are now in the §1Normal Stargate§f Room");
-	            player.sendMessage("§4Wrong World Type.");
+                player.sendMessage(ChatColor.DARK_GREEN+"Teleported");
+                player.sendMessage("You are now in your "+ChatColor.DARK_BLUE+"Normal Stargate"+ChatColor.RESET+" Room");
+	            player.sendMessage(ChatColor.DARK_RED+"Wrong World Type.");
         		return true;
         	}
         } else if (Target == "IN_MOD") {
@@ -259,7 +259,7 @@ public class RoomControler {
             		Armor = true;
             	}
             	if(Armor){
-            		player.sendMessage("§4You are still wearing Armor.");
+            		player.sendMessage(ChatColor.DARK_RED+"You are still wearing Armor.");
             		return false;
             	}
             	}
@@ -273,12 +273,12 @@ public class RoomControler {
                 TeleportLoc.setX((Roomloc.getX() * 7) + 5.5);
                 TeleportLoc.setZ((Roomloc.getZ() * 7) + 3.5);
                 player.teleport(TeleportLoc);
-                player.sendMessage("§2Teleportiert");
-                player.sendMessage("You are now in your §1PrivatChest§f Room");
+                player.sendMessage(ChatColor.DARK_GREEN+"Teleported");
+                player.sendMessage("You are now in your "+ChatColor.DARK_BLUE+"PrivatChest"+ChatColor.RESET+" Room");
 
                 return true;
             } else {
-                player.sendMessage("§1Room Not Generated");
+                player.sendMessage(ChatColor.DARK_RED+"Room Not Generated");
 
                 return false;
             }
@@ -289,10 +289,10 @@ public class RoomControler {
 	                    6.5, 90, 0);
 	
 	    	        player.teleport(TeleportLoc);
-	    	        player.sendMessage("§2Teleportiert");
-	    	        player.sendMessage("You are now in the §1Mod Stargate§f Room");
+	                player.sendMessage(ChatColor.DARK_GREEN+"Teleported");
+	                player.sendMessage("You are now in your "+ChatColor.DARK_BLUE+"Mod Stargate"+ChatColor.RESET+" Room");
         		} else if(plugin.PlayerModPacketListener.MissingMods.containsKey(player.getName())) {
-        			player.sendMessage("§4You are missing the following mods:");
+        			player.sendMessage(ChatColor.DARK_RED+"You are missing the following mods:");
         			for(String Mod: plugin.PlayerModPacketListener.MissingMods.get(player.getName())){
         				player.sendMessage(Mod);
         			}
@@ -306,8 +306,8 @@ public class RoomControler {
 	        		Location TeleportLoc = new Location(player.getWorld(), 26.5, 8,
                         6.5, 90, 0);
         	        player.teleport(TeleportLoc);
-        	        player.sendMessage("§2Teleportiert");
-        	        player.sendMessage("You are now in the §1Creative Stargate§f Room");
+                    player.sendMessage(ChatColor.DARK_GREEN+"Teleported");
+	                player.sendMessage("You are now in your "+ChatColor.DARK_BLUE+"Creative Stargate"+ChatColor.RESET+" Room");
         	        return true;
 	        	} else {
 	        		return false;
@@ -317,9 +317,9 @@ public class RoomControler {
                         6.5, 90, 0);
 
         	        player.teleport(TeleportLoc);
-        	        player.sendMessage("§2Teleportiert");
-        	        player.sendMessage("You are now in the §1??? Stargate§f Room");
-    	            player.sendMessage("§4Wrong World Type.");
+                    player.sendMessage(ChatColor.DARK_GREEN+"Teleported");
+	                player.sendMessage("You are now in your "+ChatColor.DARK_BLUE+"??? Stargate"+ChatColor.RESET+" Room");
+    	            player.sendMessage(ChatColor.DARK_RED+"Wrong World Type.");
         	        return true;
         	}
         }

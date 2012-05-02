@@ -260,7 +260,7 @@ public class PrivatChestPlayerListener implements Listener {
     		Chest chest = (Chest)event.getClickedBlock().getState();
     		Inventory inventory = chest.getInventory();
     		for(int i = 0; i < inventory.getSize(); i++){
-    			int id = inventory.getItem(i).getTypeId();
+    			int id = inventory.getItem(i) == null ? 0 : inventory.getItem(i).getTypeId();
     			if(!ItemCheckHandler.isItemAllowed(event.getPlayer().getWorld().getName(), id)){
     				ModItems = true;
     			}

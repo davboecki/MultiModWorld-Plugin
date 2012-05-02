@@ -2,6 +2,7 @@ package de.davboecki.multimodworld.plugin;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -74,15 +75,15 @@ public class CheckItem {
     				}
     			}
     	    	if(Name.equalsIgnoreCase("MODLOADERMP_ITEM") || Name.equalsIgnoreCase("null")){
-        			player.sendMessage("§1Not Allowed §4Moded §1Item");
+        			player.sendMessage(ChatColor.DARK_BLUE+"Not Allowed "+ChatColor.DARK_RED+"Moded "+ChatColor.DARK_BLUE+"Item");
     	    	} else {
-    	    		player.sendMessage("§1Not Allowed Item:§4 " + Name);
+    	    		player.sendMessage(ChatColor.DARK_BLUE+"Not Allowed Item:"+ChatColor.DARK_RED+" " + Name);
     	    	}
     		} else {
-    			player.sendMessage("§1Not Allowed §4Moded §1Item");
+    			player.sendMessage(ChatColor.DARK_BLUE+"Not Allowed "+ChatColor.DARK_RED+"Moded "+ChatColor.DARK_BLUE+"Item");
     		}
     	} else {
-    		player.sendMessage("§1Not Allowed Item:§4 " + item.getType().toString());
+    		player.sendMessage(ChatColor.DARK_BLUE+"Not Allowed Item:"+ChatColor.DARK_RED+" " + item.getType().toString());
     	}
     }
     
