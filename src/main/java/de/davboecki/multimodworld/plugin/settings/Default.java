@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class Default {
 	public static ArrayList<Long> ItemList(){
 		ArrayList<Long> tmp = new ArrayList<Long>();
-		for(long i=0;i<=122;i++){
+		for(long i=0;i<=124;i++) {
 			tmp.add(i);
 		}
-		for(long i=256;i<=385;i++){
+		for(long i=256;i<=385;i++) {
 			tmp.add(i);
 		}
-		for(long i=2256;i<=2266;i++){
+		for(long i=2256;i<=2266;i++) {
 			tmp.add(i);
 		}
 		return tmp;
@@ -101,6 +101,7 @@ public class Default {
 		tmp.add("net.minecraft.server.EntityWeatherLighting");
 		tmp.add("net.minecraft.server.EntityWolf");
 		tmp.add("net.minecraft.server.EntityZombie");
+		tmp.add("net.minecraft.server.EntityOcelot");
 		return tmp;
 	}
 }
