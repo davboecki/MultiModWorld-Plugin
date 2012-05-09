@@ -83,6 +83,7 @@ public class Default {
 		tmp.add("net.minecraft.server.EntityPlayer");
 		tmp.add("net.minecraft.server.EntityPotion");
 		tmp.add("net.minecraft.server.EntityProjectile");
+		tmp.add("net.minecraft.server.EntitySenses");
 		tmp.add("net.minecraft.server.EntitySheep");
 		tmp.add("net.minecraft.server.EntitySilverfish");
 		tmp.add("net.minecraft.server.EntitySkeleton");
