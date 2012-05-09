@@ -139,7 +139,7 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 		return true;
 	}
 
-	public List replaceRecipies(List recipies) {
+	public List replaceRecipies(List recipies, String Worldname) {
 		// TODO Auto-generated method stub
 		return null;
 	}

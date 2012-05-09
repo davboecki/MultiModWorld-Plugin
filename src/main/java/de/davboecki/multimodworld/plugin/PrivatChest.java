@@ -121,7 +121,7 @@ public class PrivatChest extends JavaPlugin {
 	    if(!init) {
 		    if(MultiModWorld != null) {
 		    	String ModVersion = de.davboecki.multimodworld.api.ModChecker.getVersion();
-		        String MultiModWorldVersion = "v1.2.0";
+		        String MultiModWorldVersion = "v1.3.0";
 		        boolean correctversion = ModVersion.equalsIgnoreCase(MultiModWorldVersion);
 		        if(!correctversion) {
 		        	this.getServer().getPluginManager().disablePlugin(this);
