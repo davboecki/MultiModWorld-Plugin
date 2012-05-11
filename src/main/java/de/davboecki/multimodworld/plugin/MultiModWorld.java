@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
+import cpw.mods.fml.common.ModContainer;
+
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.ModLoader;
@@ -69,16 +71,6 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 		return flag;
 	}
 
-	public boolean hasWorldSetting(String WorldName, String Setting) {
-		if(Setting.equals("UseVanillaRecipes")) {
-			return Settings.getWorldSetting(WorldName).UseVanillaRecipes;
-		} else if(Setting.equals("PopulateChunk")) {
-			return Settings.getWorldSetting(WorldName).PopulateChunk;
-		} else {
-			return plugin.Settings.getTag(WorldName,Setting);
-		}
-	}
-
 	public boolean isCraftingAllowed(String WorldName, int id) {
 		return this.isIdAllowed(WorldName, id);
 	}
@@ -140,7 +132,10 @@ public class MultiModWorld implements IModWorldHandlePlugin{
 	}
 
 	public List replaceRecipies(List recipies, String Worldname) {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public boolean populateChunk(String name, int chunkX, int chunkZ, ModContainer mod) {
+		return Settings.getWorldSetting(name).PopulateChunk;
 	}
 }
