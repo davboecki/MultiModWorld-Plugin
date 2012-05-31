@@ -18,7 +18,7 @@
   	<dependency>
   		<groupId>org.bukkit</groupId>
   		<artifactId>craftbukkit</artifactId>
-  		<version>1.2.5-R1.3-MCPC-MMW-SNAPSHOT</version>
+  		<version>1.2.5-R3.1-MCPC-MMW-SNAPSHOT</version>
   	</dependency>
   </dependencies>
   <build>
