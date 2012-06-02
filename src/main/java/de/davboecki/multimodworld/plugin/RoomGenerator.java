@@ -63,6 +63,7 @@ public class RoomGenerator {
 	        Sign_Lobby.setLine(1, "Room");
 	        Sign_Lobby.setLine(2, "From");
 	        Sign_Lobby.setLine(3, "Normal Side");
+	        Sign_Lobby.update();
         } catch(Exception e){
         	plugin.log.info("[Privat Chest] Error Sign in lobby. (1)");
         	e.printStackTrace();
@@ -79,6 +80,7 @@ public class RoomGenerator {
 	        } else {
 	            Sign_Lobby.setLine(3, "Creative Side");
 	        }
+	        Sign_Lobby.update();
 	    } catch(Exception e){
 	    	plugin.log.info("[Privat Chest] Error Sign in lobby. (2)");
 	    	e.printStackTrace();
@@ -130,6 +132,7 @@ public class RoomGenerator {
         	Sign = (Sign) Signa.getState();
         	Sign.setLine(0, "Normal");
         	Sign.setLine(1, "Area");
+        	Sign.update();
         }catch(Exception e){}
         try{
         Block Signb = BlockTo(Material.WALL_SIGN,x + 4, 4, z + 3);
@@ -141,6 +144,7 @@ public class RoomGenerator {
         Sign.setLine(0, "Creative");
         }
         Sign.setLine(1, "Area");
+        Sign.update();
         }catch(Exception e){}
         //Chests
         BlockTo(Material.CHEST, x + 1, 2, z + 1);
